@@ -1,0 +1,9 @@
+{
+  "name": "@repo/git-commands",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "public"
+  }
+}

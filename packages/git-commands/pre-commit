@@ -1,0 +1,44 @@
+#!/bin/sh
+
+if [ -t 1 ]; then
+  exec < /dev/tty
+fi
+
+BRANCH_NAME=$(git branch | grep '*' | sed 's/* //')
+if [ $BRANCH_NAME = "(no branch)" ]
+then
+  echo "    Pre-commit not required"
+  exit 0
+fi
+
+echo "BRANCH_NAME: ${BRANCH_NAME}"
+cd "$(git rev-parse --show-toplevel)"
+
+STAGED_FILES=($(git diff --cached --name-only --diff-filter=ACMR))
+STAGED_FILES_PRETTIER=($(git diff --cached --name-only --diff-filter=ACMR | grep -i -E '\.(yml|s?css|json|[mc]?[jt]sx?)$'))
+STAGED_FILES_ESLINT=($(git diff --cached --name-only --diff-filter=ACMR | grep -i -E '\.([mc]?[jt]sx?)$'))
+STAGED_FILES_TEST=($(git diff --cached --name-only --line-prefix="../../" --diff-filter=ACMR | grep -i -E '\.([mc]?[jt]sx?)$' | grep -v -i '.stories.'))
+
+set -be
+
+echo "Prettier: ${#STAGED_FILES_PRETTIER[@]} file(s)."
+if [[ "$STAGED_FILES_PRETTIER" = "" ]]; then
+  echo "    Prettier not required"
+else
+  pnpm prettier "${STAGED_FILES_PRETTIER[@]}" --ignore-unknown --write
+fi
+
+STAGED_FILES_ESLINT=("${STAGED_FILES_ESLINT[@]//apps|packages/../../apps}")
+echo "ESLint: ${#STAGED_FILES_ESLINT[@]} file(s)"
+if [[ "$STAGED_FILES_ESLINT" = "" ]]; then
+  echo "    ESLint not required"
+else
+  pnpm lint:files "${STAGED_FILES_ESLINT[@]}"
+fi
+
+# Re-add files since they may have been fixed
+git add "${STAGED_FILES[@]}"
+
+pnpm lint:tsc
+
+exit 0
