@@ -38,7 +38,7 @@ echo "Test: ${#STAGED_FILES_JEST[@]} file(s)"
 if [[ "$STAGED_FILES_JEST" = "" ]]; then
   echo "    Test not required"
 else
-  # pnpm test:ci "${STAGED_FILES_JEST[@]}"
+  echo "Vitest not set" # pnpm test:ci "${STAGED_FILES_JEST[@]}"
 fi
 
 exit 0
