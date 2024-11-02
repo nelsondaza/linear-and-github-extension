@@ -1,0 +1,18 @@
+import { cn } from '@repo/utils'
+import { forwardRef } from 'react'
+
+import type { ReactNode } from 'react'
+
+export interface {{pascalCase name}}Props {
+  children: ReactNode
+
+  className?: string
+}
+
+export const {{pascalCase name}} = forwardRef<HTMLDivElement, {{pascalCase name}}Props>(({ className, ...props }, ref) => (
+  <div {...props} className={cn('{{pascalCase name}}', className)} ref={ref}>
+    {props.children || '{{pascalCase name}}'}
+  </div>
+))
+
+{{pascalCase name}}.displayName = '{{pascalCase name}}'

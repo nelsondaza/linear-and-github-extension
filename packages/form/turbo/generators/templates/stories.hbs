@@ -1,0 +1,36 @@
+import type { Meta, StoryObj } from '@storybook/react'
+
+import { {{pascalCase name}} } from './index'
+
+export default {
+  component: {{pascalCase name}},
+  title: '@repo/form/{{pascalCase name}}',
+} as Meta<typeof {{pascalCase name}}>
+
+export const Default = {
+  args: {
+    className: '',
+  },
+} satisfies StoryObj<typeof {{pascalCase name}}>
+
+export const Required = {
+  args: {
+    ...Default.args,
+    required: true,
+  },
+} satisfies StoryObj<typeof {{pascalCase name}}>
+
+export const Disabled = {
+  args: {
+    ...Default.args,
+    disabled: true,
+  },
+} satisfies StoryObj<typeof {{pascalCase name}}>
+
+export const Transparent = {
+  args: {
+    ...Default.args,
+    disabled: true,
+    transparent: true,
+  },
+} satisfies StoryObj<typeof {{pascalCase name}}>

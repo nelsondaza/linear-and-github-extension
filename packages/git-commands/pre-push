@@ -1,0 +1,44 @@
+#!/bin/sh
+
+if [ -t 1 ]; then
+  exec < /dev/tty
+fi
+
+cd "$(git rev-parse --show-toplevel)"
+
+STAGED_FILES=($(git diff --name-only --diff-filter=ACMR origin/HEAD..))
+STAGED_FILES_PRETTIER=($(git diff --name-only --diff-filter=ACMR origin/HEAD.. | grep -i -E '\.(yml|s?css|json|[mc]?[jt]sx?)$'))
+STAGED_FILES_ESLINT=($(git diff --name-only --diff-filter=ACMR origin/HEAD.. | grep -i -E '\.([mc]?[jt]sx?)$'))
+STAGED_FILES_JEST=($(git diff --name-only --line-prefix="../../" --diff-filter=ACMR origin/HEAD.. | grep -i -E '\.([mc]?[jt]sx?)$' | grep -v -i '.stories.'))
+
+set -be
+
+echo "Prettier: ${#STAGED_FILES_PRETTIER[@]} file(s)."
+if [[ "$STAGED_FILES_PRETTIER" = "" ]]; then
+  echo "    Prettier not required"
+else
+  yarn prettier "${STAGED_FILES_PRETTIER[@]}" --write
+fi
+
+echo "ESLint: ${#STAGED_FILES_ESLINT[@]} file(s)"
+if [[ "$STAGED_FILES_ESLINT" = "" ]]; then
+  echo "    ESLint not required"
+else
+  yarn lint:files "${STAGED_FILES_ESLINT[@]}"
+fi
+
+# Re-add files since they may have been fixed
+echo "GIT add:"
+git add "${STAGED_FILES[@]}"
+
+echo "TS check:"
+yarn lint:tsc
+
+echo "Jest: ${#STAGED_FILES_JEST[@]} file(s)"
+if [[ "$STAGED_FILES_JEST" = "" ]]; then
+  echo "    Jest not required"
+else
+  yarn test:ci "${STAGED_FILES_JEST[@]}"
+fi
+
+exit 0

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "declaration": false,
+    "declarationMap": false,
+    "ignoreDeprecations": "5.0",
+    "importHelpers": true,
+    "incremental": true,
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "target": "ES5"
+  },
+  "display": "Webpack",
+  "extends": "./base.json"
+}

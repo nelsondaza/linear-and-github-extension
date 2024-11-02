@@ -1,0 +1,558 @@
+/*-------------------
+      Site Colors
+--------------------*/
+
+:root {
+  /*---   Neutrals  ---*/
+  --base-white: #fff;
+  --base-greyLight: #e2e9e9;
+  --base-greyLightest: #f4f6f6;
+
+  --base-greyLightMed: #cdd7da;
+  --base-grey: #a2abb9;
+  --base-greyDark: #637083;
+  --base-greyDarkBlue: #4c587b;
+  --base-greyDarkestBlue: #2b2c46;
+  --base-navy: #191f38;
+  --base-black: #000000;
+
+  /*---  Colors  ---*/
+  --base-blue: #3b6cf6;
+  --base-blueLight: #8ba8f9;
+  --base-blueLightest: #f7f9fd;
+  --base-green: #238752;
+  --base-greenLight: #32c376;
+  --base-greenLightest: #ecfaf2;
+  --base-orange: #f56600;
+  --base-orangeLight: #ff8d00;
+  --base-orangeLightest: #fff6e0;
+  --base-red: #e82118;
+  --base-redLight: #f58f8a;
+  --base-redLightest: #fdf5f2;
+  --base-teal: #00857e;
+  --base-tealLight: #00bfb6;
+  --base-tealLightest: #00fff6;
+  --base-yellow: #fbbd08;
+
+  /*-------------------
+          Page
+  --------------------*/
+
+  --base-textColor: var(--base-navy);
+
+  --base-primaryColor: var(--base-blue);
+  --base-primaryHCMColor: var(--base-blueLight);
+
+  --base-secondaryColor: var(--base-greyDark);
+  --base-secondaryHCMColor: var(--base-grey);
+
+  --base-tertiaryColor: var(--base-green);
+  --base-tertiaryHCMColor: var(--base-greenLight);
+
+  --base-selectionBG: rgba(var(--base-blueLight), 0.6);
+
+  color: var(--textColor);
+
+  --printFontSize: 12; /* no unit here, cuz is used in a calc() function */
+  --printPageWidth: 8in; /* 8in ~ 96px * 8 ~ 768px */
+  /* the combination of the above two variables will change how chrome will use its zoom feature when printing */
+
+  --printFontSizePX: calc(var(--printFontSize) * 1px);
+
+  --headerWidth: 11rem;
+
+  /*---   Neutrals  ---*/
+  --whiteLCM: var(--base-white);
+  --greyLightLCM: var(--base-greyLight);
+  --greyLightestLCM: var(--base-greyLightest);
+  --greyLightMedLCM: var(--base-greyLightMed);
+  --greyLCM: var(--base-grey);
+  --greyDarkLCM: var(--base-greyDark);
+  --greyDarkBlueLCM: var(--base-greyDarkBlue);
+  --greyDarkestBlueLCM: var(--base-greyDarkestBlue);
+  --navyLCM: var(--base-navy);
+  --blackLCM: var(--base-black);
+
+  /*---  Colors  ---*/
+  --blueLCM: var(--base-blue);
+  --blueLightLCM: var(--base-blueLight);
+  --blueLightestLCM: var(--base-blueLightest);
+  --greenLCM: var(--base-green);
+  --greenLightLCM: var(--base-greenLight);
+  --greenLightestLCM: var(--base-greenLightest);
+  --orangeLCM: var(--base-orange);
+  --orangeLightLCM: var(--base-orangeLight);
+  --orangeLightestLCM: var(--base-orangeLightest);
+  --redLCM: var(--base-red);
+  --redLightLCM: var(--base-redLight);
+  --redLightestLCM: var(--base-redLightest);
+  --tealLCM: var(--base-teal);
+  --tealLightLCM: var(--base-tealLight);
+  --tealLightestLCM: var(--base-tealLightest);
+  --yellowLCM: var(--base-yellow);
+
+  /*---  Shadow  ---*/
+  --shadow05LCM: rgba(var(--base-black), 0.05);
+  --shadow10LCM: rgba(var(--base-black), 0.1);
+  --shadow25LCM: rgba(var(--base-black), 0.25);
+  --shadow50LCM: rgba(var(--base-black), 0.5);
+  --shadow75LCM: rgba(var(--base-black), 0.75);
+
+  /*-------------------
+          Page
+  --------------------*/
+
+  --backgroundLCM: var(--base-greyLightest);
+  --textColorLCM: var(--base-textColor);
+  --primaryColorLCM: var(--base-primaryColor);
+  --secondaryColorLCM: var(--base-secondaryColor);
+  --tertiaryColorLCM: var(--base-tertiaryColor);
+
+  --selectionBackgroundLCM: var(--base-selectionBG);
+  --selectionTextLCM: var(--base-black);
+
+  /*---   Neutrals  ---*/
+  --whiteHCM: var(--base-navy);
+  --greyLightHCM: var(--base-greyDarkestBlue);
+  --greyLightestHCM: var(--base-greyDarkBlue);
+  --greyLightMedHCM: var(--base-greyDark);
+  --greyHCM: var(--base-grey);
+  --greyDarkHCM: var(--base-greyLightMed);
+  --greyDarkBlueHCM: var(--base-greyLightest);
+  --greyDarkestBlueHCM: var(--base-greyLight);
+  --navyHCM: var(--base-white);
+  --blackHCM: var(--base-white);
+
+  /*---  Colors  ---*/
+  --blueHCM: var(--base-blueLight);
+  --blueLightHCM: var(--base-blueLightest);
+  --blueLightestHCM: var(--base-navy);
+  --greenHCM: var(--base-greenLight);
+  --greenLightHCM: var(--base-greenLightest);
+  --greenLightestHCM: var(--base-green);
+  --orangeHCM: var(--base-orangeLight);
+  --orangeLightHCM: var(--base-orangeLightest);
+  --orangeLightestHCM: var(--base-orange);
+  --redHCM: var(--base-redLight);
+  --redLightHCM: var(--base-redLightest);
+  --redLightestHCM: var(--base-red);
+  --tealHCM: var(--base-tealLight);
+  --tealLightHCM: var(--base-tealLight);
+  --tealLightestHCM: var(--base-teal);
+  --yellowHCM: var(--base-yellow);
+
+  /*---  Shadow  ---*/
+  --shadow05HCM: rgba(var(--base-white), 0.05);
+  --shadow10HCM: rgba(var(--base-white), 0.1);
+  --shadow25HCM: rgba(var(--base-white), 0.25);
+  --shadow50HCM: rgba(var(--base-white), 0.5);
+  --shadow75HCM: rgba(var(--base-white), 0.75);
+
+  /*-------------------
+          Page
+  --------------------*/
+
+  --backgroundHCM: var(--base-navy);
+  --textColorHCM: var(--base-white);
+  --primaryColorHCM: var(--base-greenLight);
+  --secondaryColorHCM: var(--base-grey);
+  --tertiaryColorHCM: var(--base-blueLight);
+
+  --selectionBackgroundHCM: var(--base-selectionBG);
+  --selectionTextHCM: var(--base-grey);
+
+  /*---   Neutrals  ---*/
+  --white: var(--whiteLCM);
+  --greyLight: var(--greyLightLCM);
+  --greyLightest: var(--greyLightestLCM);
+  --greyLightMed: var(--greyLightMedLCM);
+  --grey: var(--greyLCM);
+  --greyDark: var(--greyDarkLCM);
+  --greyDarkBlue: var(--greyDarkBlueLCM);
+  --greyDarkestBlue: var(--greyDarkestBlueLCM);
+  --navy: var(--navyLCM);
+  --black: var(--blackLCM);
+
+  /*---  Colors  ---*/
+  --blue: var(--blueLCM);
+  --blueLight: var(--blueLightLCM);
+  --blueLightest: var(--blueLightestLCM);
+  --green: var(--greenLCM);
+  --greenLight: var(--greenLightLCM);
+  --greenLightest: var(--greenLightestLCM);
+  --orange: var(--orangeLCM);
+  --orangeLight: var(--orangeLightLCM);
+  --orangeLightest: var(--orangeLightestLCM);
+  --red: var(--redLCM);
+  --redLight: var(--redLightLCM);
+  --redLightest: var(--redLightestLCM);
+  --teal: var(--tealLCM);
+  --tealLight: var(--tealLightLCM);
+  --tealLightest: var(--tealLightestLCM);
+  --yellow: var(--yellowLCM);
+
+  /*---  Shadow  ---*/
+  --shadow05: var(--shadow05LCM);
+  --shadow10: var(--shadow10LCM);
+  --shadow25: var(--shadow25LCM);
+  --shadow50: var(--shadow50LCM);
+  --shadow75: var(--shadow75LCM);
+
+  /*-------------------
+          Page
+  --------------------*/
+
+  --background: var(--backgroundLCM);
+  --textColor: var(--textColorLCM);
+  --primaryColor: var(--primaryColorLCM);
+  --secondaryColor: var(--secondaryColorLCM);
+  --tertiaryColor: var(--tertiaryColorLCM);
+
+  --selectionBackground: var(--selectionBackgroundLCM);
+  --selectionText: var(--selectionTextLCM);
+}
+
+[data-dark-mode] {
+  color: var(--textColor);
+
+  /*---   Neutrals  ---*/
+  --white: var(--whiteHCM);
+  --greyLight: var(--greyLightHCM);
+  --greyLightest: var(--greyLightestHCM);
+  --greyLightMed: var(--greyLightMedHCM);
+  --grey: var(--greyHCM);
+  --greyDark: var(--greyDarkHCM);
+  --greyDarkBlue: var(--greyDarkBlueHCM);
+  --greyDarkestBlue: var(--greyDarkestBlueHCM);
+  --navy: var(--navyHCM);
+  --black: var(--blackHCM);
+
+  /*---  Colors  ---*/
+  --blue: var(--blueHCM);
+  --blueLight: var(--blueLightHCM);
+  --blueLightest: var(--blueLightestHCM);
+  --green: var(--greenHCM);
+  --greenLight: var(--greenLightHCM);
+  --greenLightest: var(--greenLightestHCM);
+  --orange: var(--orangeHCM);
+  --orangeLight: var(--orangeLightHCM);
+  --orangeLightest: var(--orangeLightestHCM);
+  --red: var(--redHCM);
+  --redLight: var(--redLightHCM);
+  --redLightest: var(--redLightestHCM);
+  --teal: var(--tealHCM);
+  --tealLight: var(--tealLightHCM);
+  --tealLightest: var(--tealLightestHCM);
+  --yellow: var(--yellowHCM);
+
+  /*---  Shadow  ---*/
+  --shadow05: var(--shadow05HCM);
+  --shadow10: var(--shadow10HCM);
+  --shadow25: var(--shadow25HCM);
+  --shadow50: var(--shadow50HCM);
+  --shadow75: var(--shadow75HCM);
+
+  /*-------------------
+          Page
+  --------------------*/
+
+  --background: var(--backgroundHCM);
+  --textColor: var(--textColorHCM);
+  --primaryColor: var(--primaryColorHCM);
+  --secondaryColor: var(--secondaryColorHCM);
+  --tertiaryColor: var(--tertiaryColorHCM);
+
+  --selectionBackground: var(--selectionBackgroundHCM);
+  --selectionText: var(--selectionTextHCM);
+}
+
+:global(.body-content) {
+  /* max-width: 1200 px; */
+  /* margin: 0 auto; */
+}
+
+@page {
+  size: letter;
+  margin: 1cm 1cm 1cm 1cm;
+}
+
+@font-face {
+  font-family: appleLogo;
+  src: local('Lucida Grande');
+  unicode-range: U+f8ff;
+}
+
+html {
+  line-height: calc(21em / 16);
+  scroll-behavior: smooth;
+
+  @media print {
+    font-size: var(--printFontSizePX); /* fixed for print mode */
+    line-height: normal;
+    width: var(--printPageWidth) !important;
+    zoom: 1 !important;
+  }
+}
+
+.ui.dimmer {
+  background-color: rgba(var(--base-navy), 0.85) !important;
+}
+
+.ui.checkbox label,
+.ui.checkbox + label,
+.ui.form .field > label {
+  color: inherit !important;
+}
+
+.ui.segment,
+.ui.segments .segment,
+.ui.form {
+  font-size: inherit;
+}
+
+.ui.form {
+  & > .fields {
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+}
+
+.icon.outline {
+  outline-style: none;
+}
+
+*::placeholder {
+  @media print {
+    display: none !important;
+    color: transparent !important;
+  }
+}
+
+/* webpack error overlay */
+#react-refresh-overlay {
+  display: none;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+  outline: none;
+
+  &:visited {
+    color: currentColor;
+    text-decoration: none;
+    outline: none;
+  }
+
+  &:active,
+  &:focus,
+  &:focus-within,
+  &:hover {
+    color: var(--teal);
+    text-decoration: underline;
+    outline: none;
+  }
+}
+
+i.icon,
+i.icons {
+  line-height: 1em;
+  text-decoration: none;
+}
+
+* {
+  border-style: solid;
+  border-width: 0;
+  border-color: var(--greyLightMed);
+}
+
+.ui.menu > .ui.dropdown,
+.ui.dropdown {
+  @apply bg-greyLightest border border-greyLightMed;
+  color: var(--textColor) !important;
+
+  &.search.active > input.search + .text {
+    padding: 0;
+    opacity: 1;
+  }
+
+  &.search.active > input.search:focus + .text {
+    opacity: 0.85 !important;
+  }
+
+  & > .text:not(.default) {
+    color: var(--textColor) !important;
+  }
+
+  & > .menu {
+    margin: 0 !important;
+    color: inherit !important;
+    border: 1px solid var(--grey) !important;
+    background: var(--white) !important;
+    box-shadow: none !important;
+    border-radius: 0 0 1em 1em !important;
+    max-height: 17.5rem !important;
+
+    & > [role='option'].item {
+      border: 1px solid transparent !important;
+      border-top-color: var(--greyLightMed) !important;
+      color: inherit !important;
+      font-weight: normal;
+
+      &.active,
+      &:hover {
+        background: var(--white) !important;
+        border-bottom-color: var(--greyDarkestBlue) !important;
+        border-top-color: var(--greyDarkestBlue) !important;
+        color: var(--black) !important;
+      }
+
+      &.selected {
+        background: var(--white) !important;
+        border-bottom-color: var(--blueLight) !important;
+        border-top-color: var(--blueLight) !important;
+        color: var(--blue) !important;
+      }
+    }
+
+    & > .message {
+      border-top: inherit !important;
+      color: inherit !important;
+      opacity: 0.7;
+    }
+  }
+}
+
+.ui.message {
+  background: var(--white);
+  color: var(--textColor);
+  border: 1px solid var(--greyLightest) !important;
+}
+
+.ui.segment {
+  margin: calc(8em / 16) 0;
+  background-color: var(--white) !important;
+  color: var(--textColor) !important;
+}
+
+.icon.outline {
+  outline-style: none;
+}
+
+.ui.popup {
+  background: var(--white) !important;
+  border: 1px solid var(--grey) !important;
+  color: var(--textColor) !important;
+  font-size: calc(12em / 16) !important;
+  padding: 0 !important;
+  box-shadow:
+    0 2px 4px 0 rgba(34, 36, 38, 0.12),
+    0 2px 10px 0 rgba(34, 36, 38, 0.15) !important;
+
+  &.top:before {
+    bottom: calc(-4.5em / 12) !important;
+  }
+
+  &:before {
+    background: var(--white) !important;
+    border: 1px solid transparent !important;
+    border-right-color: var(--grey) !important;
+    border-bottom-color: var(--grey) !important;
+    box-shadow: 1px 1px 0 0 rgba(34, 36, 38, 0.15) !important;
+  }
+}
+
+.ui.modal {
+  background-color: var(--white) !important;
+  border: 1px solid var(--grey) !important;
+  color: var(--textColor) !important;
+
+  & > .content {
+    background-color: inherit;
+  }
+
+  & > .actions {
+    border-top: 1px solid var(--grey) !important;
+    background-color: inherit;
+    padding: calc(6em / 16) !important;
+    display: flex;
+    justify-content: flex-end;
+    gap: calc(6em / 16);
+
+    & > button {
+      margin: 0 !important;
+      border: 1px solid var(--grey) !important;
+    }
+  }
+}
+
+.ui.checkbox label,
+.ui.checkbox + label,
+.ui.form .field > label {
+  color: inherit !important;
+}
+
+:global(.break-words) {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+[data-dark-mode] {
+  & .ui.menu > .ui.dropdown,
+  &.ui.menu > .ui.dropdown,
+  & .ui.dropdown,
+  &.ui.dropdown {
+    background: var(--white) !important;
+    border: 1px solid var(--grey) !important;
+
+    & > .menu {
+      border: 1px solid var(--grey) !important;
+      background: var(--greyLight) !important;
+
+      & > [role='option'].item {
+        border: 1px solid transparent !important;
+        border-top-color: var(--greyLightMed) !important;
+
+        &.active,
+        &:hover,
+        &.selected {
+          border-bottom-color: var(--greyLightMed) !important;
+          border-top-color: var(--grey) !important;
+        }
+
+        &.selected {
+          border-color: var(--blue) !important;
+        }
+      }
+
+      & > .message {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+input::selection,
+textarea::selection {
+  background-color: var(--base-selectionBG);
+  color: var(--base-black);
+}
+
+::selection {
+  background-color: var(--base-selectionBG);
+  color: var(--base-black);
+}
+
+[data-dark-mode] {
+  input::selection,
+  textarea::selection {
+    background-color: var(--base-blueLightest);
+    color: var(--base-textColor);
+  }
+
+  ::selection {
+    background-color: var(--base-blueLightest);
+    color: var(--base-textColor);
+  }
+}

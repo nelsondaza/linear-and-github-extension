@@ -1,0 +1,14 @@
+import type { Meta, StoryObj } from '@storybook/react'
+
+import { {{pascalCase name}} } from './index'
+
+export default {
+  component: {{pascalCase name}},
+  title: '@repo/ui/{{pascalCase name}}',
+} as Meta<typeof {{pascalCase name}}>
+
+export const Default = {
+  args: {
+    className: '',
+  },
+} satisfies StoryObj<typeof {{pascalCase name}}>

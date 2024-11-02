@@ -1,0 +1,15 @@
+import { cn } from '@repo/utils'
+
+import type { FC, ReactNode } from 'react'
+
+export interface {{pascalCase name}}Props {
+  children: ReactNode
+
+  className?: string
+}
+
+export const {{pascalCase name}}: FC<{{pascalCase name}}Props> = ({ className, ...props }) => (
+  <div {...props} className={cn('{{pascalCase name}}', className)}>
+    {props.children || '{{pascalCase name}}'}
+  </div>
+)

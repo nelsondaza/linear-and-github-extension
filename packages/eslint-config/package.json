@@ -1,0 +1,41 @@
+{
+  "name": "@repo/eslint-config",
+  "version": "1.0.0",
+  "private": true,
+  "files": [
+    "base.js",
+    "library.js",
+    "next.js",
+    "react-internal.js"
+  ],
+  "scripts": {
+    "lint": "eslint . --cache --cache-location './dist/.eslintcache' --ext .js,.jsx,.ts,.tsx --ignore-path ../../.gitignore",
+    "lint:files": "eslint --cache --cache-location './dist/.eslintcache' --ext .js,.jsx,.ts,.tsx --ignore-path ../../.gitignore --max-warnings 0",
+    "pretty": "prettier --write --ignore-path ../../.gitignore . && yarn lint --fix"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "@typescript-eslint/parser": "^8.12.2",
+    "@vercel/style-guide": "^6.0.0",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-config-next": "^15.0.2",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-turbo": "^2.2.3",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jest": "^28.8.3",
+    "eslint-plugin-jest-dom": "^5.4.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-only-warn": "^1.1.0",
+    "eslint-plugin-perfectionist": "^3.9.1",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-sort-class-members": "^1.21.0",
+    "eslint-plugin-storybook": "^0.10.1",
+    "eslint-plugin-tailwindcss": "^3.17.5",
+    "eslint-plugin-testing-library": "^6.4.0",
+    "eslint-plugin-unicorn": "^56.0.0"
+  }
+}

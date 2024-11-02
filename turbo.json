@@ -1,0 +1,35 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env", "**/tsconfig.json", "**/yarn.lock"],
+  "globalEnv": ["CI", "NODE_ENV", "PLASMO_PUBLIC_LINEAR_PERSONAL_API_KEY"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"]
+    },
+    "dev": {
+      "cache": false,
+      "interruptible": true,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "lint:files": {},
+    "lint:tsc": {},
+    "package": {},
+    "postinstall": {
+      "dependsOn": ["^postinstall"]
+    },
+    "pretty": {},
+    "test": {
+      "dependsOn": ["^test"]
+    },
+    "test:ci": {
+      "dependsOn": ["^test:ci"]
+    },
+    "test:base:ci": {
+      "dependsOn": ["^test:base:ci"]
+    }
+  }
+}

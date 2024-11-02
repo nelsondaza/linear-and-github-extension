@@ -1,0 +1,65 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "outputs": [".plasmo/**"]
+    },
+    "dev": {
+      "cache": false,
+      "interruptible": true,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["@repo/utils#build", "@repo/ui#build", "@repo/form#build"],
+      "inputs": [
+        "!dist/",
+        "!.node_modules",
+        "**/*.cjs",
+        "**/*.cts",
+        "**/*.js",
+        "**/*.jsx",
+        "**/*.mjs",
+        "**/*.mts",
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "outputs": ["./dist/.eslintcache"]
+    },
+    "lint:files": {
+      "dependsOn": ["@repo/utils#build", "@repo/ui#build", "@repo/form#build"]
+    },
+    "lint:tsc": {
+      "dependsOn": ["@repo/utils#build", "@repo/ui#build", "@repo/form#build"]
+    },
+    "package": {
+      "dependsOn": ["@app/lage#build"],
+      "outputs": ["build/**"]
+    },
+    "pretty": {
+      "inputs": [
+        "!dist/",
+        "!.node_modules",
+        "**/*.cjs",
+        "**/*.cts",
+        "**/*.js",
+        "**/*.jsx",
+        "**/*.mjs",
+        "**/*.mts",
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.json"
+      ],
+      "outputs": ["./dist/.eslintcache"]
+    },
+    "test": {
+      "outputs": ["dist/coverage/**", "dist/.vitestcache/**"]
+    },
+    "test:ci": {
+      "outputs": ["dist/coverage/**", "dist/.vitestcache/**"]
+    },
+    "test:base:ci": {
+      "outputs": ["dist/coverage/**", "dist/.vitestcache/**"]
+    }
+  }
+}

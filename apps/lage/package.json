@@ -1,0 +1,57 @@
+{
+  "name": "@app/lage",
+  "version": "1.0.0",
+  "description": "A basic extension to connect Linear and GitHub",
+  "displayName": "Linear and GitHub extension",
+  "keywords": [],
+  "author": "Nelson Daza",
+  "license": "ISC",
+  "engines": {
+    "node": ">=20.17",
+    "yarn": ">=1.22"
+  },
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "package": "plasmo package",
+    "lint": "eslint . --cache --cache-location './dist/.eslintcache' --ext .js,.jsx,.ts,.tsx --ignore-path ../../.gitignore",
+    "lint:files": "eslint --cache --cache-location './dist/.eslintcache' --ext .js,.jsx,.ts,.tsx --ignore-path ../../.gitignore --max-warnings 0",
+    "lint:tsc": "tsc --noEmit",
+    "pretty": "prettier --write --ignore-path ../../.gitignore . && yarn lint --fix",
+    "test": "yarn install && shx mkdir -p ./dist/coverage && yarn test:base",
+    "test:base": "yarn vitest",
+    "test:base:ci": "yarn test --bail=1 --reporter=default --coverage.enabled=false",
+    "test:ci": "yarn test:base:ci related",
+    "test:w": "yarn test --watch"
+  },
+  "dependencies": {
+    "@linear/sdk": "^32.0.0",
+    "plasmo": "0.89.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "4.3.1",
+    "@repo/vitest-config": "*",
+    "@types/chrome": "0.0.280",
+    "@types/node": "22.8.6",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "@vitest/coverage-v8": "^2.1.4",
+    "autoprefixer": "^10.4.20",
+    "jsdom": "^25.0.1",
+    "postcss": "^8.4.47",
+    "prettier": "3.3.3",
+    "tailwindcss": "^3.4.14",
+    "typescript": "5.6.3",
+    "vitest": "^2.1.4"
+  },
+  "manifest": {
+    "host_permissions": [
+      "https://*/*"
+    ]
+  }
+}

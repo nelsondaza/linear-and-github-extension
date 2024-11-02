@@ -1,0 +1,15 @@
+{
+  "name": "@repo/git-commands",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "postinstall": "shx cp -r ./pre-* ../../.git/hooks"
+  },
+  "dependencies": {
+    "shx": "^0.3.4"
+  }
+}

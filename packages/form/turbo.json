@@ -1,0 +1,72 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/"]
+    },
+    "dev": {
+      "cache": false,
+      "interruptible": true,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["@repo/utils#build", "@repo/ui#build"],
+      "inputs": [
+        "!dist/",
+        "!.node_modules",
+        "**/*.cjs",
+        "**/*.cts",
+        "**/*.js",
+        "**/*.jsx",
+        "**/*.mjs",
+        "**/*.mts",
+        "**/*.ts",
+        "**/*.tsx"
+      ],
+      "outputs": ["./dist/.eslintcache"]
+    },
+    "lint:files": {
+      "cache": false,
+      "dependsOn": ["@repo/utils#build", "@repo/ui#build"]
+    },
+    "lint:tsc": {
+      "inputs": [
+        "!dist/",
+        "!.node_modules",
+        "**/*.cjs",
+        "**/*.cts",
+        "**/*.js",
+        "**/*.jsx",
+        "**/*.mjs",
+        "**/*.mts",
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.json"
+      ],
+      "dependsOn": ["@repo/utils#build", "@repo/ui#build"]
+    },
+    "pretty": {
+      "inputs": [
+        "!dist/",
+        "!.node_modules",
+        "**/*.cjs",
+        "**/*.cts",
+        "**/*.js",
+        "**/*.jsx",
+        "**/*.mjs",
+        "**/*.mts",
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.json"
+      ],
+      "outputs": ["./dist/.eslintcache"]
+    },
+    "serve": {
+      "cache": false,
+      "interruptible": true,
+      "persistent": true
+    }
+  }
+}

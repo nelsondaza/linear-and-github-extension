@@ -1,0 +1,558 @@
+/*-------------------
+      Site Colors
+--------------------*/
+
+/*---   Neutrals  ---*/
+$white: #fff;
+$greyLight: #e2e9e9;
+$greyLightest: #f4f6f6;
+
+$greyLightMed: #cdd7da;
+$grey: #a2abb9;
+$greyDark: #637083;
+$greyDarkBlue: #4c587b;
+$greyDarkestBlue: #2b2c46;
+$navy: #191f38;
+$black: #000000;
+
+/*---  Colors  ---*/
+$blue: #3b6cf6;
+$blueLight: #8ba8f9;
+$blueLightest: #f7f9fd;
+$green: #238752;
+$greenLight: #32c376;
+$greenLightest: #ecfaf2;
+$orange: #f56600;
+$orangeLight: #ff8d00;
+$orangeLightest: #fff6e0;
+$red: #e82118;
+$redLight: #f58f8a;
+$redLightest: #fdf5f2;
+$teal: #00857e;
+$tealLight: #00bfb6;
+$tealLightest: #00fff6;
+$yellow: #fbbd08;
+
+/*-------------------
+        Page
+--------------------*/
+
+$textColor: $navy;
+
+$primaryColor: $blue;
+$primaryHCMColor: $blueLight;
+
+$secondaryColor: $greyDark;
+$secondaryHCMColor: $grey;
+
+$tertiaryColor: $green;
+$tertiaryHCMColor: $greenLight;
+
+$selectionBG: rgba($blueLight, 0.6);
+
+:root {
+  color: var(--textColor);
+
+  --printFontSize: 12; /* no unit here, cuz is used in a calc() function */
+  --printPageWidth: 8in; /* 8in ~ 96px * 8 ~ 768px */
+  /* the combination of the above two variables will change how chrome will use its zoom feature when printing */
+
+  --printFontSizePX: calc(var(--printFontSize) * 1px);
+
+  --headerWidth: 11rem;
+
+  /*---   Neutrals  ---*/
+  --whiteLCM: #{$white};
+  --greyLightLCM: #{$greyLight};
+  --greyLightestLCM: #{$greyLightest};
+  --greyLightMedLCM: #{$greyLightMed};
+  --greyLCM: #{$grey};
+  --greyDarkLCM: #{$greyDark};
+  --greyDarkBlueLCM: #{$greyDarkBlue};
+  --greyDarkestBlueLCM: #{$greyDarkestBlue};
+  --navyLCM: #{$navy};
+  --blackLCM: #{$black};
+
+  /*---  Colors  ---*/
+  --blueLCM: #{$blue};
+  --blueLightLCM: #{$blueLight};
+  --blueLightestLCM: #{$blueLightest};
+  --greenLCM: #{$green};
+  --greenLightLCM: #{$greenLight};
+  --greenLightestLCM: #{$greenLightest};
+  --orangeLCM: #{$orange};
+  --orangeLightLCM: #{$orangeLight};
+  --orangeLightestLCM: #{$orangeLightest};
+  --redLCM: #{$red};
+  --redLightLCM: #{$redLight};
+  --redLightestLCM: #{$redLightest};
+  --tealLCM: #{$teal};
+  --tealLightLCM: #{$tealLight};
+  --tealLightestLCM: #{$tealLightest};
+  --yellowLCM: #{$yellow};
+
+  /*---  Shadow  ---*/
+  --shadow05LCM: #{rgba($black, 0.05)};
+  --shadow10LCM: #{rgba($black, 0.1)};
+  --shadow25LCM: #{rgba($black, 0.25)};
+  --shadow50LCM: #{rgba($black, 0.5)};
+  --shadow75LCM: #{rgba($black, 0.75)};
+
+  /*-------------------
+          Page
+  --------------------*/
+
+  --backgroundLCM: #{$greyLightest};
+  --textColorLCM: #{$textColor};
+  --primaryColorLCM: #{$primaryColor};
+  --secondaryColorLCM: #{$secondaryColor};
+  --tertiaryColorLCM: #{$tertiaryColor};
+
+  --selectionBackgroundLCM: #{$selectionBG};
+  --selectionTextLCM: #{$black};
+
+  /*---   Neutrals  ---*/
+  --whiteHCM: #{$navy};
+  --greyLightHCM: #{$greyDarkestBlue};
+  --greyLightestHCM: #{$greyDarkBlue};
+  --greyLightMedHCM: #{$greyDark};
+  --greyHCM: #{$grey};
+  --greyDarkHCM: #{$greyLightMed};
+  --greyDarkBlueHCM: #{$greyLightest};
+  --greyDarkestBlueHCM: #{$greyLight};
+  --navyHCM: #{$white};
+  --blackHCM: #{$white};
+
+  /*---  Colors  ---*/
+  --blueHCM: #{$blueLight};
+  --blueLightHCM: #{$blueLightest};
+  --blueLightestHCM: #{$navy};
+  --greenHCM: #{$greenLight};
+  --greenLightHCM: #{$greenLightest};
+  --greenLightestHCM: #{$green};
+  --orangeHCM: #{$orangeLight};
+  --orangeLightHCM: #{$orangeLightest};
+  --orangeLightestHCM: #{$orange};
+  --redHCM: #{$redLight};
+  --redLightHCM: #{$redLightest};
+  --redLightestHCM: #{$red};
+  --tealHCM: #{$tealLight};
+  --tealLightHCM: #{$tealLight};
+  --tealLightestHCM: #{$teal};
+  --yellowHCM: #{$yellow};
+
+  /*---  Shadow  ---*/
+  --shadow05HCM: #{rgba($black, 0.05)};
+  --shadow10HCM: #{rgba($black, 0.1)};
+  --shadow25HCM: #{rgba($black, 0.25)};
+  --shadow50HCM: #{rgba($black, 0.5)};
+  --shadow75HCM: #{rgba($black, 0.75)};
+
+  /*-------------------
+          Page
+  --------------------*/
+
+  --backgroundHCM: #{$navy};
+  --textColorHCM: #{$white};
+  --primaryColorHCM: #{$greenLight};
+  --secondaryColorHCM: #{$grey};
+  --tertiaryColorHCM: #{$blueLight};
+
+  --selectionBackgroundHCM: #{$selectionBG};
+  --selectionTextHCM: #{$grey};
+
+  /*---   Neutrals  ---*/
+  --white: var(--whiteLCM);
+  --greyLight: var(--greyLightLCM);
+  --greyLightest: var(--greyLightestLCM);
+  --greyLightMed: var(--greyLightMedLCM);
+  --grey: var(--greyLCM);
+  --greyDark: var(--greyDarkLCM);
+  --greyDarkBlue: var(--greyDarkBlueLCM);
+  --greyDarkestBlue: var(--greyDarkestBlueLCM);
+  --navy: var(--navyLCM);
+  --black: var(--blackLCM);
+
+  /*---  Colors  ---*/
+  --blue: var(--blueLCM);
+  --blueLight: var(--blueLightLCM);
+  --blueLightest: var(--blueLightestLCM);
+  --green: var(--greenLCM);
+  --greenLight: var(--greenLightLCM);
+  --greenLightest: var(--greenLightestLCM);
+  --orange: var(--orangeLCM);
+  --orangeLight: var(--orangeLightLCM);
+  --orangeLightest: var(--orangeLightestLCM);
+  --red: var(--redLCM);
+  --redLight: var(--redLightLCM);
+  --redLightest: var(--redLightestLCM);
+  --teal: var(--tealLCM);
+  --tealLight: var(--tealLightLCM);
+  --tealLightest: var(--tealLightestLCM);
+  --yellow: var(--yellowLCM);
+
+  /*---  Shadow  ---*/
+  --shadow05: var(--shadow05LCM);
+  --shadow10: var(--shadow10LCM);
+  --shadow25: var(--shadow25LCM);
+  --shadow50: var(--shadow50LCM);
+  --shadow75: var(--shadow75LCM);
+
+  /*-------------------
+          Page
+  --------------------*/
+
+  --background: var(--backgroundLCM);
+  --textColor: var(--textColorLCM);
+  --primaryColor: var(--primaryColorLCM);
+  --secondaryColor: var(--secondaryColorLCM);
+  --tertiaryColor: var(--tertiaryColorLCM);
+
+  --selectionBackground: var(--selectionBackgroundLCM);
+  --selectionText: var(--selectionTextLCM);
+}
+
+[data-dark-mode] {
+  color: var(--textColor);
+
+  /*---   Neutrals  ---*/
+  --white: var(--whiteHCM);
+  --greyLight: var(--greyLightHCM);
+  --greyLightest: var(--greyLightestHCM);
+  --greyLightMed: var(--greyLightMedHCM);
+  --grey: var(--greyHCM);
+  --greyDark: var(--greyDarkHCM);
+  --greyDarkBlue: var(--greyDarkBlueHCM);
+  --greyDarkestBlue: var(--greyDarkestBlueHCM);
+  --navy: var(--navyHCM);
+  --black: var(--blackHCM);
+
+  /*---  Colors  ---*/
+  --blue: var(--blueHCM);
+  --blueLight: var(--blueLightHCM);
+  --blueLightest: var(--blueLightestHCM);
+  --green: var(--greenHCM);
+  --greenLight: var(--greenLightHCM);
+  --greenLightest: var(--greenLightestHCM);
+  --orange: var(--orangeHCM);
+  --orangeLight: var(--orangeLightHCM);
+  --orangeLightest: var(--orangeLightestHCM);
+  --red: var(--redHCM);
+  --redLight: var(--redLightHCM);
+  --redLightest: var(--redLightestHCM);
+  --teal: var(--tealHCM);
+  --tealLight: var(--tealLightHCM);
+  --tealLightest: var(--tealLightestHCM);
+  --yellow: var(--yellowHCM);
+
+  /*---  Shadow  ---*/
+  --shadow05: var(--shadow05HCM);
+  --shadow10: var(--shadow10HCM);
+  --shadow25: var(--shadow25HCM);
+  --shadow50: var(--shadow50HCM);
+  --shadow75: var(--shadow75HCM);
+
+  /*-------------------
+          Page
+  --------------------*/
+
+  --background: var(--backgroundHCM);
+  --textColor: var(--textColorHCM);
+  --primaryColor: var(--primaryColorHCM);
+  --secondaryColor: var(--secondaryColorHCM);
+  --tertiaryColor: var(--tertiaryColorHCM);
+
+  --selectionBackground: var(--selectionBackgroundHCM);
+  --selectionText: var(--selectionTextHCM);
+}
+
+:global(.body-content) {
+  /* max-width: 1200 px; */
+  /* margin: 0 auto; */
+}
+
+@page {
+  size: letter;
+  margin: 1cm 1cm 1cm 1cm;
+}
+
+@font-face {
+  font-family: appleLogo;
+  src: local('Lucida Grande');
+  unicode-range: U+f8ff;
+}
+
+html {
+  line-height: calc(21em / 16);
+  scroll-behavior: smooth;
+
+  @media print {
+    font-size: var(--printFontSizePX); /* fixed for print mode */
+    line-height: normal;
+    width: var(--printPageWidth) !important;
+    zoom: 1 !important;
+  }
+}
+
+.ui.dimmer {
+  background-color: rgba($navy, 0.85) !important;
+}
+
+.ui.checkbox label,
+.ui.checkbox + label,
+.ui.form .field > label {
+  color: inherit !important;
+}
+
+.ui.segment,
+.ui.segments .segment,
+.ui.form {
+  font-size: inherit;
+}
+
+.ui.form {
+  & > .fields {
+    &:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+}
+
+.icon.outline {
+  outline-style: none;
+}
+
+*::placeholder {
+  @media print {
+    display: none !important;
+    color: transparent !important;
+  }
+}
+
+/* webpack error overlay */
+#react-refresh-overlay {
+  display: none;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+  outline: none;
+
+  &:visited {
+    color: currentColor;
+    text-decoration: none;
+    outline: none;
+  }
+
+  &:active,
+  &:focus,
+  &:focus-within,
+  &:hover {
+    color: var(--teal);
+    text-decoration: underline;
+    outline: none;
+  }
+}
+
+i.icon,
+i.icons {
+  line-height: 1em;
+  text-decoration: none;
+}
+
+* {
+  border-style: solid;
+  border-width: 0;
+  border-color: var(--greyLightMed);
+}
+
+.ui.menu > .ui.dropdown,
+.ui.dropdown {
+  @apply bg-greyLightest border border-greyLightMed;
+  color: var(--textColor) !important;
+
+  &.search.active > input.search + .text {
+    padding: 0;
+    opacity: 1;
+  }
+
+  &.search.active > input.search:focus + .text {
+    opacity: 0.85 !important;
+  }
+
+  & > .text:not(.default) {
+    color: var(--textColor) !important;
+  }
+
+  & > .menu {
+    margin: 0 !important;
+    color: inherit !important;
+    border: 1px solid var(--grey) !important;
+    background: var(--white) !important;
+    box-shadow: none !important;
+    border-radius: 0 0 1em 1em !important;
+    max-height: 17.5rem !important;
+
+    & > [role='option'].item {
+      border: 1px solid transparent !important;
+      border-top-color: var(--greyLightMed) !important;
+      color: inherit !important;
+      font-weight: normal;
+
+      &.active,
+      &:hover {
+        background: var(--white) !important;
+        border-bottom-color: var(--greyDarkestBlue) !important;
+        border-top-color: var(--greyDarkestBlue) !important;
+        color: var(--black) !important;
+      }
+
+      &.selected {
+        background: var(--white) !important;
+        border-bottom-color: var(--blueLight) !important;
+        border-top-color: var(--blueLight) !important;
+        color: var(--blue) !important;
+      }
+    }
+
+    & > .message {
+      border-top: inherit !important;
+      color: inherit !important;
+      opacity: 0.7;
+    }
+  }
+}
+
+.ui.message {
+  background: var(--white);
+  color: var(--textColor);
+  border: 1px solid var(--greyLightest) !important;
+}
+
+.ui.segment {
+  margin: calc(8em / 16) 0;
+  background-color: var(--white) !important;
+  color: var(--textColor) !important;
+}
+
+.icon.outline {
+  outline-style: none;
+}
+
+.ui.popup {
+  background: var(--white) !important;
+  border: 1px solid var(--grey) !important;
+  color: var(--textColor) !important;
+  font-size: calc(12em / 16) !important;
+  padding: 0 !important;
+  box-shadow:
+    0 2px 4px 0 rgba(34, 36, 38, 0.12),
+    0 2px 10px 0 rgba(34, 36, 38, 0.15) !important;
+
+  &.top:before {
+    bottom: calc(-4.5em / 12) !important;
+  }
+
+  &:before {
+    background: var(--white) !important;
+    border: 1px solid transparent !important;
+    border-right-color: var(--grey) !important;
+    border-bottom-color: var(--grey) !important;
+    box-shadow: 1px 1px 0 0 rgba(34, 36, 38, 0.15) !important;
+  }
+}
+
+.ui.modal {
+  background-color: var(--white) !important;
+  border: 1px solid var(--grey) !important;
+  color: var(--textColor) !important;
+
+  & > .content {
+    background-color: inherit;
+  }
+
+  & > .actions {
+    border-top: 1px solid var(--grey) !important;
+    background-color: inherit;
+    padding: calc(6em / 16) !important;
+    display: flex;
+    justify-content: flex-end;
+    gap: calc(6em / 16);
+
+    & > button {
+      margin: 0 !important;
+      border: 1px solid var(--grey) !important;
+    }
+  }
+}
+
+.ui.checkbox label,
+.ui.checkbox + label,
+.ui.form .field > label {
+  color: inherit !important;
+}
+
+:global(.break-words) {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+[data-dark-mode] {
+  & .ui.menu > .ui.dropdown,
+  &.ui.menu > .ui.dropdown,
+  & .ui.dropdown,
+  &.ui.dropdown {
+    background: var(--white) !important;
+    border: 1px solid var(--grey) !important;
+
+    & > .menu {
+      border: 1px solid var(--grey) !important;
+      background: var(--greyLight) !important;
+
+      & > [role='option'].item {
+        border: 1px solid transparent !important;
+        border-top-color: var(--greyLightMed) !important;
+
+        &.active,
+        &:hover,
+        &.selected {
+          border-bottom-color: var(--greyLightMed) !important;
+          border-top-color: var(--grey) !important;
+        }
+
+        &.selected {
+          border-color: var(--blue) !important;
+        }
+      }
+
+      & > .message {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+input::selection,
+textarea::selection {
+  background-color: $selectionBG;
+  color: $black;
+}
+
+::selection {
+  background-color: $selectionBG;
+  color: $black;
+}
+
+[data-dark-mode] {
+  input::selection,
+  textarea::selection {
+    background-color: $blueLightest;
+    color: $textColor;
+  }
+
+  ::selection {
+    background-color: $blueLightest;
+    color: $textColor;
+  }
+}
