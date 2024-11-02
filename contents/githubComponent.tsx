@@ -2,6 +2,7 @@
 import cssText from 'data-text:~style.css'
 
 import { LinearIssue, useDocumentCodes } from '@repo/linear'
+import { QueryClientProvider } from '@repo/utils'
 
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo'
 
@@ -27,11 +28,13 @@ const PlasmoInline = () => {
   const codes = useDocumentCodes()
 
   return (
-    <div className="border border-gray-300 rounded-md w-full text-base">
-      {codes.map((code) => (
-        <LinearIssue key={code} code={code} />
-      ))}
-    </div>
+    <QueryClientProvider>
+      <div className="border border-gray-300 rounded-md w-full text-base">
+        {codes.map((code) => (
+          <LinearIssue key={code} code={code} />
+        ))}
+      </div>
+    </QueryClientProvider>
   )
 }
 
