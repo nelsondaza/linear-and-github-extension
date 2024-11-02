@@ -1,6 +1,8 @@
 import { cn } from '@repo/utils'
 import { useQuery } from 'react-query'
 
+import { StatusCanceled } from '@repo/linear/src/components/icons/StatusCanceled'
+
 import { linearClient } from '../client'
 
 import {
@@ -13,6 +15,7 @@ import {
   StatusBacklog,
   StatusDoing,
   StatusDone,
+  StatusReview,
   StatusTodo,
 } from './icons'
 
@@ -46,17 +49,14 @@ export const LinearIssue = ({ code }: { code: string }) => {
         <div className="text-sm text-gray-500 min-w-14">{code}</div>
         {status ? (
           <>
-            {status.type === 'completed' && <StatusDone />}
             {status.type === 'backlog' && <StatusBacklog />}
-            {status.type === 'unstarted' && <StatusTodo />}
-            {status.type === 'started' && <StatusDone />}
-            {['triage', 'backlog', 'started', 'canceled']}
-            <StatusDone />
-            <StatusBacklog className="text-gray-400" />
-            <StatusTodo className="text-gray-400" />
-            <StatusTodo className="text-red-500" />
-            <StatusDone />
-            <StatusDoing className="text-yellow-500" />
+            {status.type === 'unstarted' && status.name === 'Blocked' && <StatusTodo className="text-red-500" />}
+            {status.type === 'unstarted' && status.name !== 'Blocked' && <StatusTodo className="text-gray-400" />}
+            {status.type === 'started' && status.name === 'In Review' && <StatusReview className="text-green-600" />}
+            {status.type === 'started' && status.name !== 'In Review' && <StatusDoing className="text-yellow-400" />}
+            {status.type === 'completed' && <StatusDone />}
+            {status.type === 'canceled' && <StatusCanceled className="text-gray-400" />}
+            {status.type === 'triage' && <StatusBacklog />}
           </>
         ) : (
           <LinearIcon
