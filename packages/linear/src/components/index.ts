@@ -1,3 +1,2 @@
-export * from './DotsIcon'
-export * from './LinearIcon'
+export * from './icons'
 export * from './LinearIssue'

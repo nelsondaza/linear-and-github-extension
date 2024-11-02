@@ -1,15 +1,20 @@
 import { cn } from '@repo/utils'
 import { useQuery } from 'react-query'
 
-import { PriorityHigh } from '@repo/linear/src/components/PriorityHigh'
-import { PriorityLow } from '@repo/linear/src/components/PriorityLow'
-import { PriorityMedium } from '@repo/linear/src/components/PriorityMedium'
-import { PriorityUrgent } from '@repo/linear/src/components/PriorityUrgent'
-
 import { linearClient } from '../client'
 
-import { LinearIcon } from './LinearIcon'
-import { PriorityNone } from './PriorityNone'
+import {
+  LinearIcon,
+  PriorityHigh,
+  PriorityLow,
+  PriorityMedium,
+  PriorityNone,
+  PriorityUrgent,
+  StatusBacklog,
+  StatusDoing,
+  StatusDone,
+  StatusTodo,
+} from './icons'
 
 export const LinearIssue = ({ code }: { code: string }) => {
   const fetchIssue = useQuery({
@@ -17,15 +22,18 @@ export const LinearIssue = ({ code }: { code: string }) => {
     queryKey: ['linear', 'issues', code],
   })
 
-  const fetchStatuses = useQuery({
-    queryFn: async () => linearClient.projectStatuses(),
-    queryKey: ['linear', 'statuses'],
-  })
-
   const issue = fetchIssue.data?.nodes?.at(0)
 
+  const fetchIssueStatus = useQuery({
+    enabled: !!issue,
+    queryFn: async () => issue.state,
+    queryKey: ['linear', 'issues', code, 'state'],
+  })
+
+  const status = fetchIssueStatus.data
+
   // eslint-disable-next-line no-console
-  console.log({ issue, statuses: fetchStatuses.data })
+  console.log({ issue, status })
 
   return (
     <div className="flex flex-wrap gap-1.5 items-center justify-between border-b border-gray-300 last:border-0 px-4 py-2">
@@ -36,13 +44,29 @@ export const LinearIssue = ({ code }: { code: string }) => {
         {issue?.priority === 3 && <PriorityMedium />}
         {issue?.priority === 4 && <PriorityLow />}
         <div className="text-sm text-gray-500 min-w-14">{code}</div>
-        <LinearIcon
-          className={cn(
-            fetchIssue.isFetching && 'text-orange-400',
-            fetchIssue.isFetched && 'text-violet-900',
-            fetchIssue.isFetched && fetchIssue.data.totalCount < 1 && 'text-gray-600',
-          )}
-        />
+        {status ? (
+          <>
+            {status.type === 'completed' && <StatusDone />}
+            {status.type === 'backlog' && <StatusBacklog />}
+            {status.type === 'unstarted' && <StatusTodo />}
+            {status.type === 'started' && <StatusDone />}
+            {['triage', 'backlog', 'started', 'canceled']}
+            <StatusDone />
+            <StatusBacklog className="text-gray-400" />
+            <StatusTodo className="text-gray-400" />
+            <StatusTodo className="text-red-500" />
+            <StatusDone />
+            <StatusDoing className="text-yellow-500" />
+          </>
+        ) : (
+          <LinearIcon
+            className={cn(
+              fetchIssue.isFetching && 'text-orange-500',
+              fetchIssue.isFetched && 'text-indigo-500',
+              fetchIssue.isFetched && fetchIssue.data.totalCount < 1 && 'text-gray-600',
+            )}
+          />
+        )}
         {issue ? (
           <div className="text-sm ">
             <a className="hover:text-black hover:underline underline-offset-3" href={issue.url} target={code}>
