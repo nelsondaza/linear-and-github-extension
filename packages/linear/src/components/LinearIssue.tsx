@@ -1,11 +1,14 @@
 import { cn } from '@repo/utils'
 import { useQuery } from 'react-query'
 
+import { AvatarInitials } from '@repo/linear/src/components/AvatarInitials'
 import { StatusCanceled } from '@repo/linear/src/components/icons/StatusCanceled'
 
 import { linearClient } from '../client'
 
+import { Avatar } from './Avatar'
 import {
+  Assignee,
   LinearIcon,
   PriorityHigh,
   PriorityLow,
@@ -35,8 +38,16 @@ export const LinearIssue = ({ code }: { code: string }) => {
 
   const status = fetchIssueStatus.data
 
+  const fetchAssignee = useQuery({
+    enabled: !!issue,
+    queryFn: async () => issue.assignee,
+    queryKey: ['linear', 'issues', code, 'assignee'],
+  })
+
+  const assignee = fetchAssignee.data
+
   // eslint-disable-next-line no-console
-  console.log({ issue, status })
+  console.log({ assignee, issue, status })
 
   return (
     <div className="flex flex-wrap gap-1.5 items-center justify-between border-b border-gray-300 last:border-0 px-4 py-2">
@@ -99,6 +110,21 @@ export const LinearIssue = ({ code }: { code: string }) => {
         ) : (
           <div className="text-sm ">...</div>
         )}
+        <div className="flex items-center">
+          {assignee ? (
+            assignee.avatarUrl ? (
+              <Avatar name={assignee.name} src={assignee.avatarUrl} />
+            ) : (
+              <AvatarInitials
+                backgroundColor={assignee.avatarBackgroundColor}
+                initials={assignee.initials}
+                name={assignee.name}
+              />
+            )
+          ) : (
+            <Assignee className="text-gray-500" />
+          )}
+        </div>
       </div>
     </div>
   )
