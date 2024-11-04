@@ -1,4 +1,20 @@
-This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
+<p align="center"><a href="https://nelsondaza.github.io/linear-and-github-extension/" target="_blank" rel="noreferrer noopener"><img width="250" alt="LAGE's mascot" src="https://nelsondaza.github.io/linear-and-github-extension/imag/icon.svg"></a></p>
+<h2 align="center">Linear And GitHub Extension<br /><small><small>LAGE</small></small></h2>
+<p align="center">
+<a rel="noreferrer noopener" href="https://chromewebstore.google.com/detail/"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Chrome-141e24.svg?&style=for-the-badge&logo=google-chrome&logoColor=white"></a>
+<br/>
+Linear And GitHub Extension is an <strong>open-source</strong> MIT-licensed <strong>Chrome browser extension</strong> designed to "link" Linear and GitHub web pages information. LAGE will generate cross-site sections that aims to <strong>let you easily check</strong> issues and PRs relations.
+
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
+
+</p>
+
+## Questions
+
+Most questions can be answered by reading or opening up a
+new [discussion](https://github.com/nelsondaza/linear-and-github-extension/discussions).
+
+### Building with NodeJS
 
 ## Getting Started
 
@@ -8,9 +24,7 @@ First, run the development server:
 pnpm dev
 ```
 
-Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
-
-You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
+Open your browser and load the appropriate development build. For example, if you are developing for the Chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
 
 For further guidance, [visit our Documentation](https://docs.plasmo.com/)
 
@@ -22,8 +36,4 @@ Run the following:
 pnpm build
 ```
 
-This should create a production bundle for your extension, ready to be zipped and published to the stores.
-
-## Submit to the webstores
-
-The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
+This should create a production bundle for your extension, ready to be zipped and published to the stores or upload to your personal Chrome browser.
