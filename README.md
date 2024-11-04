@@ -1,4 +1,4 @@
-<p align="center"><a href="https://nelsondaza.github.io/linear-and-github-extension/" target="_blank" rel="noreferrer noopener"><img width="250" alt="LAGE's mascot" src="https://raw.githubusercontent.com/nelsondaza/linear-and-github-extension/refs/heads/main/page/img/icon.svg"></a></p>
+<p align="center"><a href="https://nelsondaza.github.io/linear-and-github-extension/" target="_blank" rel="noreferrer noopener"><img width="200" alt="LAGE's mascot" src="https://raw.githubusercontent.com/nelsondaza/linear-and-github-extension/refs/heads/main/page/img/icon.svg"></a></p>
 <h2 align="center">Linear And GitHub Extension<br /><small><small>LAGE</small></small></h2>
 <p align="center">
 <a rel="noreferrer noopener" href="https://chromewebstore.google.com/detail/"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Chrome-141e24.svg?&style=for-the-badge&logo=google-chrome&logoColor=white"></a>
