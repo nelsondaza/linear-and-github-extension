@@ -3,22 +3,13 @@ import { cn } from '@repo/utils'
 import { useQuery } from 'react-query'
 
 import { AvatarInitials } from '@repo/linear/src/components/AvatarInitials'
-import { StatusCanceled } from '@repo/linear/src/components/icons/StatusCanceled'
 import { PriorityPopover } from '@repo/linear/src/components/PriorityPopover'
+import { StatusPopover } from '@repo/linear/src/components/StatusPopover'
 
 import { linearClient } from '../client'
 
 import { Avatar } from './Avatar'
-import {
-  Assignee,
-  EstimateIcon,
-  LinearIcon,
-  StatusBacklog,
-  StatusDoing,
-  StatusDone,
-  StatusReview,
-  StatusTodo,
-} from './icons'
+import { Assignee, EstimateIcon, LinearIcon } from './icons'
 
 export const LinearIssue = ({ code }: { code: string }) => {
   const fetchIssue = useQuery({
@@ -50,16 +41,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
         <PriorityPopover issue={issue} priority={issue?.priority} />
         <div className="text-sm text-gray-500 min-w-14">{code}</div>
         {status ? (
-          <>
-            {status.type === 'backlog' && <StatusBacklog />}
-            {status.type === 'unstarted' && status.name === 'Blocked' && <StatusTodo className="text-red-500" />}
-            {status.type === 'unstarted' && status.name !== 'Blocked' && <StatusTodo className="text-gray-400" />}
-            {status.type === 'started' && status.name === 'In Review' && <StatusReview className="text-green-600" />}
-            {status.type === 'started' && status.name !== 'In Review' && <StatusDoing className="text-yellow-400" />}
-            {status.type === 'completed' && <StatusDone />}
-            {status.type === 'canceled' && <StatusCanceled className="text-gray-400" />}
-            {status.type === 'triage' && <StatusBacklog />}
-          </>
+          <StatusPopover issue={issue} status={status} />
         ) : (
           <LinearIcon
             className={cn(
