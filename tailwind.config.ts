@@ -83,7 +83,7 @@ const spacing = {
 
 // We want each package to be responsible for its own content.
 const config: Omit<Config, 'content'> = {
-  content: ['./*.tsx', 'contents/**/*.tsx', 'packages/**/*.tsx'],
+  content: ['./*.tsx', './contents/**/*.tsx', './packages/**/*.tsx'],
   darkMode: ['selector', ['[data-dark-mode="true"]', '[data-mode="dark"]']],
   mode: 'jit',
   plugins: [

@@ -2,6 +2,7 @@
 import cssText from 'data-text:~style.css'
 
 import { LinearIssue, useDocumentCodes } from '@repo/linear'
+import { setTooltipRoot } from '@repo/ui'
 import { QueryClientProvider } from '@repo/utils'
 
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from 'plasmo'
@@ -29,10 +30,12 @@ const PlasmoInline = () => {
 
   return (
     <QueryClientProvider>
-      <div className="border border-gray-300 rounded-md w-full text-base">
-        {codes.map((code) => (
-          <LinearIssue key={code} code={code} />
-        ))}
+      <div className="w-full" ref={setTooltipRoot}>
+        <div className="border border-gray-300 rounded-md w-full">
+          {codes.map((code) => (
+            <LinearIssue key={code} code={code} />
+          ))}
+        </div>
       </div>
     </QueryClientProvider>
   )

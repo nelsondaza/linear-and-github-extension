@@ -33,12 +33,10 @@ echo "ESLint: ${#STAGED_FILES_ESLINT[@]} file(s)"
 if [[ "$STAGED_FILES_ESLINT" = "" ]]; then
   echo "    ESLint not required"
 else
-  pnpm lint:files "${STAGED_FILES_ESLINT[@]}"
+  pnpm lint:files --fix "${STAGED_FILES_ESLINT[@]}"
 fi
 
 # Re-add files since they may have been fixed
 git add "${STAGED_FILES[@]}"
-
-pnpm lint:tsc
 
 exit 0

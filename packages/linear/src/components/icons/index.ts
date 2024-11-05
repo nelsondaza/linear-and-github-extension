@@ -1,5 +1,6 @@
 export * from './Assignee'
 export * from './DotsIcon'
+export * from './EstimateIcon'
 export * from './LinearIcon'
 export * from './PriorityHigh'
 export * from './PriorityLow'
