@@ -1,6 +1,8 @@
+import { cn } from '@repo/utils'
+
 export const StatusTodo = ({ className }: { className?: string }) => (
   <svg
-    className={className}
+    className={cn('inline-block', className)}
     fill="currentColor"
     height="1em"
     viewBox="0 0 16 16"

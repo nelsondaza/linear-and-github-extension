@@ -4,6 +4,7 @@ import { useQuery } from 'react-query'
 
 import { AvatarInitials } from '@repo/linear/src/components/AvatarInitials'
 import { StatusCanceled } from '@repo/linear/src/components/icons/StatusCanceled'
+import { PriorityPopover } from '@repo/linear/src/components/PriorityPopover'
 
 import { linearClient } from '../client'
 
@@ -12,11 +13,6 @@ import {
   Assignee,
   EstimateIcon,
   LinearIcon,
-  PriorityHigh,
-  PriorityLow,
-  PriorityMedium,
-  PriorityNone,
-  PriorityUrgent,
   StatusBacklog,
   StatusDoing,
   StatusDone,
@@ -48,17 +44,10 @@ export const LinearIssue = ({ code }: { code: string }) => {
 
   const assignee = fetchAssignee.data
 
-  // eslint-disable-next-line no-console
-  console.log({ assignee, issue, status })
-
   return (
     <div className="flex flex-wrap gap-1.5 items-center justify-between border-b border-gray-300 last:border-0 px-4 py-2">
       <div className="flex gap-1.5 items-center">
-        {!issue?.priority && <PriorityNone />}
-        {issue?.priority === 1 && <PriorityUrgent className="text-orange-400" />}
-        {issue?.priority === 2 && <PriorityHigh />}
-        {issue?.priority === 3 && <PriorityMedium />}
-        {issue?.priority === 4 && <PriorityLow />}
+        <PriorityPopover issue={issue} priority={issue?.priority} />
         <div className="text-sm text-gray-500 min-w-14">{code}</div>
         {status ? (
           <>

@@ -1,4 +1,5 @@
 export * from './Assignee'
+export * from './CheckIcon'
 export * from './DotsIcon'
 export * from './EstimateIcon'
 export * from './LinearIcon'
