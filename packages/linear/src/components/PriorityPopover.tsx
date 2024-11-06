@@ -9,11 +9,10 @@ import { CheckIcon, PriorityHigh, PriorityLow, PriorityMedium, PriorityNone, Pri
 
 interface PriorityPopoverProps {
   issue: IssueSearchResult
-  priority?: number
 }
 
-export const PriorityPopover = ({ issue, priority }: PriorityPopoverProps) => {
-  const queryKey = ['linear', 'issues', issue?.identifier]
+export const PriorityPopover = ({ issue }: PriorityPopoverProps) => {
+  const queryKey = ['linear', 'issues', issue?.identifier, 'issue']
 
   const updateIssue = useMutation({
     mutationFn: async (_priority: number) => {
@@ -39,6 +38,7 @@ export const PriorityPopover = ({ issue, priority }: PriorityPopoverProps) => {
   }
 
   const icon = updateIssue.isLoading ? <StateBacklog className="animate-spin text-gray-500" /> : <CheckIcon />
+  const priority = issue?.priority || 0
 
   return (
     <Tooltip

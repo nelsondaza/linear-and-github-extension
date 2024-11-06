@@ -38,8 +38,8 @@ export const LinearIssue = ({ code }: { code: string }) => {
   return (
     <div className="flex flex-wrap gap-1.5 items-center justify-between border-b border-gray-300 last:border-0 px-4 py-2">
       <div className="flex gap-1.5 items-center">
-        <PriorityPopover issue={issue} priority={issue?.priority} />
-        <div className="text-sm text-gray-500 min-w-14">{code}</div>
+        <PriorityPopover issue={issue} />
+        <div className="text-sm text-gray-500 min-w-16">{code}</div>
         {state ? (
           <StatusPopover issue={issue} status={state} />
         ) : (
@@ -52,7 +52,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
           />
         )}
         {issue ? (
-          <div className="text-sm ">
+          <div className="text-sm">
             <a className="hover:text-black hover:underline underline-offset-3" href={issue.url} target={code}>
               {issue.title || ''}
             </a>
@@ -67,9 +67,9 @@ export const LinearIssue = ({ code }: { code: string }) => {
             {issue.estimate === undefined ? (
               ''
             ) : (
-              <span>
+              <>
                 <EstimateIcon /> {issue.estimate}
-              </span>
+              </>
             )}
           </div>
         ) : (

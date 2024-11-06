@@ -4,10 +4,18 @@ import { useMemo } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
 import type { IssueSearchResult, WorkflowState } from '@linear/sdk'
-import { linearClient, StateBacklog, StateCompleted, StateStarted, StateUnstarted } from '@repo/linear'
-import { StateCanceled } from '@repo/linear/src/components/icons/StateCanceled'
 
-import { CheckIcon } from './icons'
+import { linearClient } from '../client'
+
+import {
+  CheckIcon,
+  StateBacklog,
+  StateCanceled,
+  StateCompleted,
+  StateStarted,
+  StateTriage,
+  StateUnstarted,
+} from './icons'
 
 interface StatusPopoverProps {
   issue: IssueSearchResult
@@ -62,7 +70,7 @@ function StateIcon({ state, states = [] }: { state: WorkflowState; states?: Work
       {state.type === 'started' && <StateStarted fill={state.color} percentage={filledPercent} />}
       {state.type === 'completed' && <StateCompleted fill={state.color} />}
       {state.type === 'canceled' && <StateCanceled fill={state.color} />}
-      {state.type === 'triage' && <StateBacklog fill={state.color} />}
+      {state.type === 'triage' && <StateTriage fill={state.color} />}
     </>
   )
 }
