@@ -53,7 +53,7 @@ const useTeamStates = (issue: IssueSearchResult) => {
 function StateIcon({ state, states = [] }: { state: WorkflowState; states?: WorkflowState[] }) {
   const siblings = states.filter((s) => s.type === state.type)
   const index = siblings.findIndex((s) => s.id === state.id)
-  const filledPercent = index === -1 ? 0.5 : (index + 1) / (siblings.length + 2)
+  const filledPercent = index === -1 ? 0.5 : (index + 1) / (siblings.length + 1)
 
   return (
     <>
@@ -84,9 +84,6 @@ export const StatusPopover = ({ issue, status }: StatusPopoverProps) => {
       const previousStatusFetch = queryClient.getQueryData<WorkflowState>(queryKey)
       queryClient.setQueryData(queryKey, statuses.find((s) => s.id === _stateId)!)
       return { previousStatusFetch }
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['linear', 'issues', issue.identifier] })
     },
   })
 
