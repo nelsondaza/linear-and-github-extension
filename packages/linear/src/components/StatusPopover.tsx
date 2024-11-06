@@ -15,7 +15,10 @@ interface StatusPopoverProps {
 
 export const StatusPopover = ({ issue, status }: StatusPopoverProps) => {
   const statusesFetch = useQuery({
-    queryFn: async () => linearClient.workflowStates(),
+    queryFn: async () => {
+      const team = await issue.team
+      return team.states()
+    },
     queryKey: ['linear', 'statuses'],
   })
 
