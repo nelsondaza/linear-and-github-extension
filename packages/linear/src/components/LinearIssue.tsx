@@ -14,18 +14,18 @@ import { Assignee, EstimateIcon, LinearIcon } from './icons'
 export const LinearIssue = ({ code }: { code: string }) => {
   const fetchIssue = useQuery({
     queryFn: async () => linearClient.searchIssues(code),
-    queryKey: ['linear', 'issues', code],
+    queryKey: ['linear', 'issues', code, 'issue'],
   })
 
   const issue = fetchIssue.data?.nodes?.at(0)
 
-  const fetchIssueStatus = useQuery({
+  const fetchIssueState = useQuery({
     enabled: !!issue,
     queryFn: async () => issue.state,
     queryKey: ['linear', 'issues', code, 'state'],
   })
 
-  const status = fetchIssueStatus.data
+  const state = fetchIssueState.data
 
   const fetchAssignee = useQuery({
     enabled: !!issue,
@@ -40,8 +40,8 @@ export const LinearIssue = ({ code }: { code: string }) => {
       <div className="flex gap-1.5 items-center">
         <PriorityPopover issue={issue} priority={issue?.priority} />
         <div className="text-sm text-gray-500 min-w-14">{code}</div>
-        {status ? (
-          <StatusPopover issue={issue} status={status} />
+        {state ? (
+          <StatusPopover issue={issue} status={state} />
         ) : (
           <LinearIcon
             className={cn(

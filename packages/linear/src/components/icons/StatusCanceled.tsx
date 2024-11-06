@@ -1,9 +1,9 @@
 import { cn } from '@repo/utils'
 
-export const StatusCanceled = ({ className }: { className?: string }) => (
+export const StatusCanceled = ({ className, fill = 'currentColor' }: { className?: string; fill?: string }) => (
   <svg
     className={cn('inline-block', className)}
-    fill="currentColor"
+    fill={fill}
     height="1em"
     viewBox="0 0 16 16"
     width="1em"
