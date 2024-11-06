@@ -4,8 +4,8 @@ import { useMemo } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
 import type { IssueSearchResult, WorkflowState } from '@linear/sdk'
-import { linearClient, StatusBacklog, StatusDone, StatusReview, StatusTodo } from '@repo/linear'
-import { StatusCanceled } from '@repo/linear/src/components/icons/StatusCanceled'
+import { linearClient, StateBacklog, StateCompleted, StateStarted, StateUnstarted } from '@repo/linear'
+import { StateCanceled } from '@repo/linear/src/components/icons/StateCanceled'
 
 import { CheckIcon } from './icons'
 
@@ -57,12 +57,12 @@ function StateIcon({ state, states = [] }: { state: WorkflowState; states?: Work
 
   return (
     <>
-      {state.type === 'backlog' && <StatusBacklog fill={state.color} />}
-      {state.type === 'unstarted' && <StatusTodo fill={state.color} />}
-      {state.type === 'started' && <StatusReview fill={state.color} percentage={filledPercent} />}
-      {state.type === 'completed' && <StatusDone fill={state.color} />}
-      {state.type === 'canceled' && <StatusCanceled fill={state.color} />}
-      {state.type === 'triage' && <StatusBacklog fill={state.color} />}
+      {state.type === 'backlog' && <StateBacklog fill={state.color} />}
+      {state.type === 'unstarted' && <StateUnstarted fill={state.color} />}
+      {state.type === 'started' && <StateStarted fill={state.color} percentage={filledPercent} />}
+      {state.type === 'completed' && <StateCompleted fill={state.color} />}
+      {state.type === 'canceled' && <StateCanceled fill={state.color} />}
+      {state.type === 'triage' && <StateBacklog fill={state.color} />}
     </>
   )
 }
@@ -94,7 +94,7 @@ export const StatusPopover = ({ issue, status }: StatusPopoverProps) => {
     await updateStatus.mutateAsync(newStatus)
   }
 
-  const icon = updateStatus.isLoading ? <StatusBacklog className="animate-spin text-gray-500" /> : <CheckIcon />
+  const icon = updateStatus.isLoading ? <StateBacklog className="animate-spin text-gray-500" /> : <CheckIcon />
 
   return (
     <Tooltip

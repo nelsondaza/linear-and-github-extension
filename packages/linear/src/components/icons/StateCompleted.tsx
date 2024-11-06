@@ -1,6 +1,6 @@
 import { cn } from '@repo/utils'
 
-export const StatusDone = ({ className, fill = 'currentColor' }: { className?: string; fill?: string }) => (
+export const StateCompleted = ({ className, fill = 'currentColor' }: { className?: string; fill?: string }) => (
   <svg
     className={cn('inline-block', className)}
     fill="none"

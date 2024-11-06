@@ -1,6 +1,6 @@
 import { cn } from '@repo/utils'
 
-export const StatusReview = ({
+export const StateStarted = ({
   className,
   fill = 'currentColor',
   percentage = 1,
