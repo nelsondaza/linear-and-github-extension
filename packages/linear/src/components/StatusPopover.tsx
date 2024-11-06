@@ -1,25 +1,82 @@
 import { Tooltip } from '@repo/ui'
 import { queryClient } from '@repo/utils'
+import { useMemo } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
 import type { IssueSearchResult, WorkflowState } from '@linear/sdk'
-import { linearClient, StatusBacklog, StatusDoing, StatusDone, StatusReview, StatusTodo } from '@repo/linear'
-import { StatusCanceled } from '@repo/linear/src/components/icons/StatusCanceled'
 
-import { CheckIcon } from './icons'
+import { linearClient } from '../client'
+
+import {
+  CheckIcon,
+  StateBacklog,
+  StateCanceled,
+  StateCompleted,
+  StateStarted,
+  StateTriage,
+  StateUnstarted,
+} from './icons'
 
 interface StatusPopoverProps {
   issue: IssueSearchResult
   status: WorkflowState
 }
 
-export const StatusPopover = ({ issue, status }: StatusPopoverProps) => {
-  const statusesFetch = useQuery({
-    queryFn: async () => linearClient.workflowStates(),
-    queryKey: ['linear', 'statuses'],
+const useTeamStates = (issue: IssueSearchResult) => {
+  const teamFetch = useQuery({
+    enabled: !!issue,
+    queryFn: async () => issue.team,
+    queryKey: ['linear', 'issues', issue?.identifier, 'team'],
   })
 
-  const statuses = statusesFetch.data?.nodes.sort((a, b) => a.position - b.position) || []
+  const team = teamFetch.data
+
+  const statesFetch = useQuery({
+    enabled: !!team,
+    queryFn: async () => team.states(),
+    queryKey: ['linear', 'teams', team?.id, 'states'],
+  })
+
+  return useMemo(() => {
+    const orderedTypes = ['backlog', 'unstarted', 'started', 'completed', 'canceled', 'triage']
+    return (
+      statesFetch.data?.nodes.sort((a, b) => {
+        if (a.type !== b.type) {
+          for (const type of orderedTypes) {
+            if (a.type === type) {
+              return -1
+            }
+            if (b.type === type) {
+              return 1
+            }
+          }
+        }
+
+        return a.position - b.position
+      }) || []
+    )
+  }, [statesFetch.data])
+}
+
+function StateIcon({ state, states = [] }: { state: WorkflowState; states?: WorkflowState[] }) {
+  const siblings = states.filter((s) => s.type === state.type)
+  const index = siblings.findIndex((s) => s.id === state.id)
+  const filledPercent = index === -1 ? 0.5 : (index + 1) / (siblings.length + 1)
+
+  return (
+    <>
+      {state.type === 'backlog' && <StateBacklog fill={state.color} />}
+      {state.type === 'unstarted' && <StateUnstarted fill={state.color} />}
+      {state.type === 'started' && <StateStarted fill={state.color} percentage={filledPercent} />}
+      {state.type === 'completed' && <StateCompleted fill={state.color} />}
+      {state.type === 'canceled' && <StateCanceled fill={state.color} />}
+      {state.type === 'triage' && <StateTriage fill={state.color} />}
+    </>
+  )
+}
+
+export const StatusPopover = ({ issue, status }: StatusPopoverProps) => {
+  const statuses = useTeamStates(issue)
 
   const queryKey = ['linear', 'issues', issue.identifier, 'state']
 
@@ -36,16 +93,13 @@ export const StatusPopover = ({ issue, status }: StatusPopoverProps) => {
       queryClient.setQueryData(queryKey, statuses.find((s) => s.id === _stateId)!)
       return { previousStatusFetch }
     },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['linear', 'issues', issue.identifier] })
-    },
   })
 
   const changeStatus = (newStatus: string) => async () => {
     await updateStatus.mutateAsync(newStatus)
   }
 
-  const icon = updateStatus.isLoading ? <StatusBacklog className="animate-spin text-gray-500" /> : <CheckIcon />
+  const icon = updateStatus.isLoading ? <StateBacklog className="animate-spin text-gray-500" /> : <CheckIcon />
 
   return (
     <Tooltip
@@ -54,18 +108,7 @@ export const StatusPopover = ({ issue, status }: StatusPopoverProps) => {
         <div className="whitespace-nowrap *:flex *:gap-2 *:items-center *:w-full *:px-2.5 *:py-1.5 *:rounded-md *:cursor-pointer hover:*:bg-gray-100">
           {statuses.map((_status, index) => (
             <button key={_status.id} onClick={changeStatus(_status.id)} type="button">
-              {_status.type === 'backlog' && <StatusBacklog />}
-              {_status.type === 'unstarted' && _status.name !== 'Blocked' && <StatusTodo className="text-gray-400" />}
-              {_status.type === 'unstarted' && _status.name === 'Blocked' && <StatusTodo className="text-red-500" />}
-              {_status.type === 'started' && _status.name !== 'In Review' && (
-                <StatusDoing className="text-yellow-400" />
-              )}
-              {_status.type === 'completed' && <StatusDone />}
-              {_status.type === 'canceled' && <StatusCanceled className="text-gray-400" />}
-              {_status.type === 'started' && _status.name === 'In Review' && (
-                <StatusReview className="text-green-600" />
-              )}
-              {_status.type === 'triage' && <StatusBacklog />}
+              <StateIcon state={_status} states={statuses} />
               <div>{_status.name}</div>
               <div className="grow" />
               {status.id === _status.id && icon}
@@ -78,14 +121,7 @@ export const StatusPopover = ({ issue, status }: StatusPopoverProps) => {
       position="bottom-start"
     >
       <button className="cursor-pointer" type="button">
-        {status.type === 'backlog' && <StatusBacklog />}
-        {status.type === 'unstarted' && status.name === 'Blocked' && <StatusTodo className="text-red-500" />}
-        {status.type === 'unstarted' && status.name !== 'Blocked' && <StatusTodo className="text-gray-400" />}
-        {status.type === 'started' && status.name === 'In Review' && <StatusReview className="text-green-600" />}
-        {status.type === 'started' && status.name !== 'In Review' && <StatusDoing className="text-yellow-400" />}
-        {status.type === 'completed' && <StatusDone />}
-        {status.type === 'canceled' && <StatusCanceled className="text-gray-400" />}
-        {status.type === 'triage' && <StatusBacklog />}
+        <StateIcon state={status} states={statuses} />
       </button>
     </Tooltip>
   )

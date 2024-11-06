@@ -1,6 +1,6 @@
 import { cn } from '@repo/utils'
 
-export const StatusDone = ({ className }: { className?: string }) => (
+export const StateCompleted = ({ className, fill = 'currentColor' }: { className?: string; fill?: string }) => (
   <svg
     className={cn('inline-block', className)}
     fill="none"
@@ -14,7 +14,7 @@ export const StatusDone = ({ className }: { className?: string }) => (
       cy="7"
       fill="none"
       r="6"
-      stroke="lch(48% 59.31 288.43)"
+      stroke={fill}
       strokeDasharray="3.14 0"
       strokeDashoffset="-0.7"
       strokeWidth="2"
@@ -25,7 +25,7 @@ export const StatusDone = ({ className }: { className?: string }) => (
       cy="7"
       fill="none"
       r="3"
-      stroke="lch(48% 59.31 288.43)"
+      stroke={fill}
       strokeDasharray="18.84955592153876 100"
       strokeDashoffset="0"
       strokeWidth="6"

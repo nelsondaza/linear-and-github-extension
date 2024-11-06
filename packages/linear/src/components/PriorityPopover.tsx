@@ -3,17 +3,16 @@ import { queryClient } from '@repo/utils'
 import { useMutation } from 'react-query'
 
 import type { IssueSearchPayload, IssueSearchResult } from '@linear/sdk'
-import { linearClient, StatusBacklog } from '@repo/linear'
+import { linearClient, StateBacklog } from '@repo/linear'
 
 import { CheckIcon, PriorityHigh, PriorityLow, PriorityMedium, PriorityNone, PriorityUrgent } from './icons'
 
 interface PriorityPopoverProps {
   issue: IssueSearchResult
-  priority?: number
 }
 
-export const PriorityPopover = ({ issue, priority }: PriorityPopoverProps) => {
-  const queryKey = ['linear', 'issues', issue?.identifier]
+export const PriorityPopover = ({ issue }: PriorityPopoverProps) => {
+  const queryKey = ['linear', 'issues', issue?.identifier, 'issue']
 
   const updateIssue = useMutation({
     mutationFn: async (_priority: number) => {
@@ -38,7 +37,8 @@ export const PriorityPopover = ({ issue, priority }: PriorityPopoverProps) => {
     await updateIssue.mutateAsync(newPriority)
   }
 
-  const icon = updateIssue.isLoading ? <StatusBacklog className="animate-spin text-gray-500" /> : <CheckIcon />
+  const icon = updateIssue.isLoading ? <StateBacklog className="animate-spin text-gray-500" /> : <CheckIcon />
+  const priority = issue?.priority || 0
 
   return (
     <Tooltip

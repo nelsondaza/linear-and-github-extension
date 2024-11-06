@@ -9,7 +9,7 @@ cd "$(git rev-parse --show-toplevel)"
 STAGED_FILES=($(git diff --name-only --diff-filter=ACMR origin/HEAD..))
 STAGED_FILES_PRETTIER=($(git diff --name-only --diff-filter=ACMR origin/HEAD.. | grep -i -E '\.(yml|s?css|json|[mc]?[jt]sx?)$'))
 STAGED_FILES_ESLINT=($(git diff --name-only --diff-filter=ACMR origin/HEAD.. | grep -i -E '\.([mc]?[jt]sx?)$'))
-STAGED_FILES_JEST=($(git diff --name-only --line-prefix="../../" --diff-filter=ACMR origin/HEAD.. | grep -i -E '\.([mc]?[jt]sx?)$' | grep -v -i '.stories.'))
+STAGED_FILES_TEST=($(git diff --name-only --line-prefix="../../" --diff-filter=ACMR origin/HEAD.. | grep -i -E '\.([mc]?[jt]sx?)$' | grep -v -i '.stories.'))
 
 set -be
 
@@ -24,7 +24,7 @@ echo "ESLint: ${#STAGED_FILES_ESLINT[@]} file(s)"
 if [[ "$STAGED_FILES_ESLINT" = "" ]]; then
   echo "    ESLint not required"
 else
-  pnpm lint:files "${STAGED_FILES_ESLINT[@]}"
+  pnpm lint:files --fix "${STAGED_FILES_ESLINT[@]}"
 fi
 
 # Re-add files since they may have been fixed
@@ -34,11 +34,11 @@ git add "${STAGED_FILES[@]}"
 echo "TS check:"
 pnpm lint:tsc
 
-echo "Test: ${#STAGED_FILES_JEST[@]} file(s)"
-if [[ "$STAGED_FILES_JEST" = "" ]]; then
+echo "Test: ${#STAGED_FILES_TEST[@]} file(s)"
+if [[ "$STAGED_FILES_TEST" = "" ]]; then
   echo "    Test not required"
 else
-  echo "Vitest not set" # pnpm test:ci "${STAGED_FILES_JEST[@]}"
+  echo "Vitest not set" # pnpm test:ci "${STAGED_FILES_TEST[@]}"
 fi
 
 exit 0
