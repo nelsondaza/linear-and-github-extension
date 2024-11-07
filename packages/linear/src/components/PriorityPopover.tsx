@@ -3,7 +3,7 @@ import { queryClient } from '@repo/utils'
 import { useMutation } from 'react-query'
 
 import type { IssueSearchPayload, IssueSearchResult } from '@linear/sdk'
-import { linearClient, StateBacklog } from '@repo/linear'
+import { getLinearClient, StateBacklog } from '@repo/linear'
 
 import { CheckIcon, PriorityHigh, PriorityLow, PriorityMedium, PriorityNone, PriorityUrgent } from './icons'
 
@@ -16,7 +16,7 @@ export const PriorityPopover = ({ issue }: PriorityPopoverProps) => {
 
   const updateIssue = useMutation({
     mutationFn: async (_priority: number) => {
-      await linearClient.updateIssue(issue.id, { priority: _priority })
+      await getLinearClient().updateIssue(issue.id, { priority: _priority })
     },
     onError: (_error, _priority, context: { previousIssueFetch: IssueSearchPayload }) => {
       queryClient.setQueryData(queryKey, context.previousIssueFetch)

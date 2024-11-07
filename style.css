@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  svg {
+    @apply inline-block align-middle;
+  }
+}

@@ -6,14 +6,14 @@ import { AvatarInitials } from '@repo/linear/src/components/AvatarInitials'
 import { PriorityPopover } from '@repo/linear/src/components/PriorityPopover'
 import { StatusPopover } from '@repo/linear/src/components/StatusPopover'
 
-import { linearClient } from '../client'
+import { getLinearClient } from '../client'
 
 import { Avatar } from './Avatar'
 import { Assignee, EstimateIcon, LinearIcon } from './icons'
 
 export const LinearIssue = ({ code }: { code: string }) => {
   const fetchIssue = useQuery({
-    queryFn: async () => linearClient.searchIssues(code),
+    queryFn: async () => getLinearClient().searchIssues(code),
     queryKey: ['linear', 'issues', code, 'issue'],
   })
 
