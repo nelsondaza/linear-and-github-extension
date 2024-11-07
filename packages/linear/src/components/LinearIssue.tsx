@@ -68,7 +68,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
                 </span>
               </Tooltip>
             ) : (
-              '...'
+              <span className="text-gray-400">{fetchIssue.isFetched ? 'Linear issue not found' : '...'}</span>
             )}
           </div>
         )}
@@ -84,9 +84,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
               </>
             )}
           </div>
-        ) : (
-          <div className="text-sm ">...</div>
-        )}
+        ) : null}
         {assignee ? (
           assignee.avatarUrl ? (
             <Tooltip content={assignee.name}>
