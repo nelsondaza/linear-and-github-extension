@@ -1,3 +1,4 @@
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { Tooltip } from '@repo/ui'
 import { cn } from '@repo/utils'
 import { useQuery } from 'react-query'
@@ -6,14 +7,14 @@ import { AvatarInitials } from '@repo/linear/src/components/AvatarInitials'
 import { PriorityPopover } from '@repo/linear/src/components/PriorityPopover'
 import { StatusPopover } from '@repo/linear/src/components/StatusPopover'
 
-import { linearClient } from '../client'
+import { getLinearClient } from '../client'
 
 import { Avatar } from './Avatar'
 import { Assignee, EstimateIcon, LinearIcon } from './icons'
 
 export const LinearIssue = ({ code }: { code: string }) => {
   const fetchIssue = useQuery({
-    queryFn: async () => linearClient.searchIssues(code),
+    queryFn: async () => getLinearClient().searchIssues(code),
     queryKey: ['linear', 'issues', code, 'issue'],
   })
 
@@ -47,7 +48,8 @@ export const LinearIssue = ({ code }: { code: string }) => {
             className={cn(
               fetchIssue.isFetching && 'text-orange-500',
               fetchIssue.isFetched && 'text-indigo-500',
-              fetchIssue.isFetched && fetchIssue.data.totalCount < 1 && 'text-gray-600',
+              fetchIssue.isFetched && fetchIssue.data?.totalCount < 1 && 'text-gray-600',
+              fetchIssue.isError && 'text-red-600',
             )}
           />
         )}
@@ -58,7 +60,17 @@ export const LinearIssue = ({ code }: { code: string }) => {
             </a>
           </div>
         ) : (
-          <div className="text-sm ">...</div>
+          <div className="text-sm">
+            {fetchIssue.isError ? (
+              <Tooltip content="Check extension's options for the correct API_KEY.">
+                <span className="text-red-500">
+                  Linear connection error <InformationCircleIcon className="size-4 align-top" />
+                </span>
+              </Tooltip>
+            ) : (
+              <span className="text-gray-400">{fetchIssue.isFetched ? 'Linear issue not found' : '...'}</span>
+            )}
+          </div>
         )}
       </div>
       <div className="flex gap-1.5 items-center">
@@ -72,30 +84,26 @@ export const LinearIssue = ({ code }: { code: string }) => {
               </>
             )}
           </div>
-        ) : (
-          <div className="text-sm ">...</div>
-        )}
-        <div className="flex items-center">
-          {assignee ? (
-            assignee.avatarUrl ? (
-              <Tooltip content={assignee.name}>
-                <Avatar name={assignee.name} src={assignee.avatarUrl} />
-              </Tooltip>
-            ) : (
-              <Tooltip content={assignee.name}>
-                <AvatarInitials
-                  backgroundColor={assignee.avatarBackgroundColor}
-                  initials={assignee.initials}
-                  name={assignee.name}
-                />
-              </Tooltip>
-            )
-          ) : (
-            <Tooltip content="Unassigned">
-              <Assignee className="text-gray-500" />
+        ) : null}
+        {assignee ? (
+          assignee.avatarUrl ? (
+            <Tooltip content={assignee.name}>
+              <Avatar name={assignee.name} src={assignee.avatarUrl} />
             </Tooltip>
-          )}
-        </div>
+          ) : (
+            <Tooltip content={assignee.name}>
+              <AvatarInitials
+                backgroundColor={assignee.avatarBackgroundColor}
+                initials={assignee.initials}
+                name={assignee.name}
+              />
+            </Tooltip>
+          )
+        ) : (
+          <Tooltip content="Unassigned">
+            <Assignee className="text-gray-500" />
+          </Tooltip>
+        )}
       </div>
     </div>
   )

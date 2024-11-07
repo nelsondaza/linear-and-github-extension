@@ -1,10 +1,14 @@
 import { cn } from '@repo/utils'
+import { forwardRef } from 'react'
 
-export const Assignee = ({ className }: { className?: string }) => (
+import type { SVGProps } from 'react'
+
+export const Assignee = forwardRef<SVGSVGElement, SVGProps<SVGSVGElement>>(({ className }, ref) => (
   <svg
     className={cn('inline-block', className)}
     fill="currentColor"
     height="1em"
+    ref={ref}
     viewBox="0 0 16 16"
     width="1em"
     xmlns="http://www.w3.org/2000/svg"
@@ -17,4 +21,6 @@ export const Assignee = ({ className }: { className?: string }) => (
       fillRule="evenodd"
     />
   </svg>
-)
+))
+
+Assignee.displayName = 'Assignee'

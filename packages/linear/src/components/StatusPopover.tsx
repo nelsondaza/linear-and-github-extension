@@ -5,7 +5,7 @@ import { useMutation, useQuery } from 'react-query'
 
 import type { IssueSearchResult, WorkflowState } from '@linear/sdk'
 
-import { linearClient } from '../client'
+import { getLinearClient } from '../client'
 
 import {
   CheckIcon,
@@ -82,7 +82,7 @@ export const StatusPopover = ({ issue, status }: StatusPopoverProps) => {
 
   const updateStatus = useMutation({
     mutationFn: async (_stateId: string) => {
-      await linearClient.updateIssue(issue.id, { stateId: _stateId })
+      await getLinearClient().updateIssue(issue.id, { stateId: _stateId })
     },
     onError: (_error, _priority, context: { previousStatusFetch: WorkflowState }) => {
       queryClient.setQueryData(queryKey, context.previousStatusFetch)
