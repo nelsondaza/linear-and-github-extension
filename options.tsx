@@ -19,7 +19,7 @@ function Options() {
   return (
     <div className="flex flex-col gap-2 p-2 *:p-2" ref={setTooltipRoot}>
       <div className="flex items-center gap-2 text-xl font-bold border rounded">
-        <img alt="LAGE Icon" className="size-8" src={iconImage} />
+        <img alt="LAGE Icon" className="size-6" src={iconImage} />
         <div>LAGE Options</div>
       </div>
       <div className="flex flex-col gap-2 border rounded">

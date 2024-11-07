@@ -1,3 +1,4 @@
+import { InformationCircleIcon } from '@heroicons/react/24/outline'
 import { Tooltip } from '@repo/ui'
 import { cn } from '@repo/utils'
 import { useQuery } from 'react-query'
@@ -47,7 +48,8 @@ export const LinearIssue = ({ code }: { code: string }) => {
             className={cn(
               fetchIssue.isFetching && 'text-orange-500',
               fetchIssue.isFetched && 'text-indigo-500',
-              fetchIssue.isFetched && fetchIssue.data.totalCount < 1 && 'text-gray-600',
+              fetchIssue.isFetched && fetchIssue.data?.totalCount < 1 && 'text-gray-600',
+              fetchIssue.isError && 'text-red-600',
             )}
           />
         )}
@@ -58,7 +60,17 @@ export const LinearIssue = ({ code }: { code: string }) => {
             </a>
           </div>
         ) : (
-          <div className="text-sm ">...</div>
+          <div className="text-sm">
+            {fetchIssue.isError ? (
+              <Tooltip content="Check extension's options for the correct API_KEY.">
+                <span className="text-red-500">
+                  Linear connection error <InformationCircleIcon className="size-4 align-top" />
+                </span>
+              </Tooltip>
+            ) : (
+              '...'
+            )}
+          </div>
         )}
       </div>
       <div className="flex gap-1.5 items-center">
@@ -75,27 +87,25 @@ export const LinearIssue = ({ code }: { code: string }) => {
         ) : (
           <div className="text-sm ">...</div>
         )}
-        <div className="flex items-center">
-          {assignee ? (
-            assignee.avatarUrl ? (
-              <Tooltip content={assignee.name}>
-                <Avatar name={assignee.name} src={assignee.avatarUrl} />
-              </Tooltip>
-            ) : (
-              <Tooltip content={assignee.name}>
-                <AvatarInitials
-                  backgroundColor={assignee.avatarBackgroundColor}
-                  initials={assignee.initials}
-                  name={assignee.name}
-                />
-              </Tooltip>
-            )
-          ) : (
-            <Tooltip content="Unassigned">
-              <Assignee className="text-gray-500" />
+        {assignee ? (
+          assignee.avatarUrl ? (
+            <Tooltip content={assignee.name}>
+              <Avatar name={assignee.name} src={assignee.avatarUrl} />
             </Tooltip>
-          )}
-        </div>
+          ) : (
+            <Tooltip content={assignee.name}>
+              <AvatarInitials
+                backgroundColor={assignee.avatarBackgroundColor}
+                initials={assignee.initials}
+                name={assignee.name}
+              />
+            </Tooltip>
+          )
+        ) : (
+          <Tooltip content="Unassigned">
+            <Assignee className="text-gray-500" />
+          </Tooltip>
+        )}
       </div>
     </div>
   )
