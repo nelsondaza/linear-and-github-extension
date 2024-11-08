@@ -1,7 +1,7 @@
 {
   "name": "linear-and-github-extension",
   "displayName": "Linear and github extension",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A basic extension to connect Linear and GitHub",
   "author": "Nelson Daza",
   "packageManager": "pnpm@9.12.0",
@@ -21,7 +21,7 @@
     "@heroicons/react": "^2.1.5",
     "@linear/sdk": "^32.0.0",
     "@plasmohq/storage": "^1.12.0",
-    "plasmo": "0.89.3",
+    "plasmo": "0.89.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-query": "^3.39.3"

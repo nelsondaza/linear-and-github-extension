@@ -1,7 +1,7 @@
 import { useStorage } from '@plasmohq/storage/hook'
 // eslint-disable-next-line import/no-unresolved
 import iconImage from 'data-base64:~assets/icon.svg'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { LINEAR_API_KEY_STORAGE_KEY } from '@repo/linear'
 import { Input, setTooltipRoot } from '@repo/ui'
@@ -10,7 +10,6 @@ import './style.css'
 
 function Options() {
   const [apiKey, setApiKey] = useStorage(LINEAR_API_KEY_STORAGE_KEY)
-  const [data, setData] = useState(apiKey?.replace(/./g, '*') || '')
 
   useEffect(() => {
     document.body.style.fontSize = '16px'
@@ -40,17 +39,6 @@ function Options() {
           />
         </div>
       </div>
-      <h2 className="p-2 rounded border">
-        Welcome to your options{' '}
-        <a href="https://www.plasmo.com" rel="noreferrer" target="_blank">
-          Plasmo
-        </a>{' '}
-        Extension!
-      </h2>
-      <input onChange={(e) => setData(e.target.value)} value={data} />
-      <a href="https://docs.plasmo.com" rel="noreferrer" target="_blank">
-        View Docs
-      </a>
     </div>
   )
 }
