@@ -13,8 +13,10 @@ Add a link to the related ticket/issue etc
 -->
 
 **test plan:**
+<!-- 
 - steps to set up the situation
 - and test the change to make sure it's working/fixed
+-->
 
 **qa risk: low**
 <!-- 
