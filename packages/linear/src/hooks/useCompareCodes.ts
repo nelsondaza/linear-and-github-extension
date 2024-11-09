@@ -7,6 +7,35 @@ export const useRefCodes = () => {
   return title.toLocaleUpperCase().match(/([A-Z]{2,}-\d+)/gm) || []
 }
 
+export const useTitleCodes = () => {
+  const [codes, setCodes] = useState<string[]>([])
+
+  useEffect(() => {
+    const contentNode: HTMLInputElement = document.querySelector('#pull_request_title')
+    let timeout: NodeJS.Timeout = null
+
+    const onInputChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
+      const content = target?.value || ''
+      clearTimeout(timeout)
+      timeout = setTimeout(() => setCodes(content.match(/([A-Z]{2,}-\d+)/gm) || []), 1000)
+    }
+
+    // @ts-ignore
+    contentNode.addEventListener('input', onInputChange)
+
+    // @ts-ignore
+    onInputChange({ target: contentNode })
+
+    return () => {
+      // @ts-ignore
+      contentNode.removeEventListener('input', onInputChange)
+      clearTimeout(timeout)
+    }
+  }, [])
+
+  return codes
+}
+
 export const useDescriptionCodes = () => {
   const [codes, setCodes] = useState<string[]>([])
 
@@ -38,11 +67,12 @@ export const useDescriptionCodes = () => {
 
 export const useCompareCodes = () => {
   const refCodes = useRefCodes()
+  const titieCodes = useTitleCodes()
   const descriptionCodes = useDescriptionCodes()
 
   return useMemo(
     () =>
-      [...refCodes, ...descriptionCodes]
+      [...refCodes, ...titieCodes, ...descriptionCodes]
         .toSorted((a, b) => {
           if (a.length === b.length) {
             return a.localeCompare(b)
@@ -50,6 +80,6 @@ export const useCompareCodes = () => {
           return a.length - b.length
         })
         .filter((code, index, array) => array.lastIndexOf(code) === index),
-    [refCodes.toString(), descriptionCodes.toString()],
+    [refCodes.toString(), titieCodes.toString(), descriptionCodes.toString()],
   )
 }
