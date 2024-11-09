@@ -4,7 +4,7 @@ import iconImage from 'data-base64:~assets/icon.svg'
 // eslint-disable-next-line import/no-unresolved
 import cssText from 'data-text:~style.css'
 
-import { LinearIssue, useDocumentCodes, useLinearClient } from '@repo/linear'
+import { LinearIssue, useCompareCodes, useLinearClient } from '@repo/linear'
 import { setTooltipRoot, Tooltip } from '@repo/ui'
 import { QueryClientProvider } from '@repo/utils'
 
@@ -17,11 +17,11 @@ export const getStyle = () => {
 }
 
 export const config: PlasmoCSConfig = {
-  matches: ['https://github.com/*'],
+  matches: ['https://github.com/*/compare/*?expand=*'],
 }
 
 export const getInlineAnchor: PlasmoGetInlineAnchor = async () => ({
-  element: document.querySelector('#partial-discussion-header > div:last-child'),
+  element: document.querySelector('#pull_request_title'),
   insertPosition: 'afterend',
 })
 
@@ -29,12 +29,12 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () => ({
 export const getShadowHostId = () => 'plasmo-inline-example-unique-id'
 
 const PlasmoInline = () => {
-  const codes = useDocumentCodes()
+  const codes = useCompareCodes()
   const linearClient = useLinearClient()
 
   return (
     <QueryClientProvider>
-      <div className="w-full" ref={setTooltipRoot}>
+      <div className="w-full mt-2" ref={setTooltipRoot}>
         {linearClient ? (
           <div className="border border-gray-300 rounded-md w-full">
             {codes.length === 0 && (

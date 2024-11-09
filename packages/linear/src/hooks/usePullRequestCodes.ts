@@ -29,7 +29,7 @@ export const useCommentCodes = () => {
   return codes
 }
 
-export const useDocumentCodes = () => {
+export const usePullRequestCodes = () => {
   const titleCodes = useTitleCodes()
   const commentCodes = useCommentCodes()
 

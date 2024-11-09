@@ -1,1 +1,2 @@
-export * from './useDocumentCodes'
+export * from './useCompareCodes'
+export * from './usePullRequestCodes'
