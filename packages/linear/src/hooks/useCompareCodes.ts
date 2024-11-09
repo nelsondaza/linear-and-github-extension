@@ -2,12 +2,12 @@ import { useEffect, useMemo, useState } from 'react'
 
 import type { ChangeEventHandler } from 'react'
 
-export const useRefCodes = () => {
+const useRefCodes = () => {
   const title = document.querySelector('#head-ref-selector')?.textContent || ''
   return title.toLocaleUpperCase().match(/([A-Z]{2,}-\d+)/gm) || []
 }
 
-export const useTitleCodes = () => {
+const useTitleCodes = () => {
   const [codes, setCodes] = useState<string[]>([])
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export const useTitleCodes = () => {
   return codes
 }
 
-export const useDescriptionCodes = () => {
+const useDescriptionCodes = () => {
   const [codes, setCodes] = useState<string[]>([])
 
   useEffect(() => {

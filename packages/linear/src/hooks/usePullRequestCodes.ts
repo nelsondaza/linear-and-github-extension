@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 
-export const useTitleCodes = () => {
+const useTitleCodes = () => {
   const title = document.querySelector('#partial-discussion-header h1[class*="title"]')?.textContent || ''
   return title.match(/([A-Z]{2,}-\d+)/gm) || []
 }
 
-export const useCommentCodes = () => {
+const useCommentCodes = () => {
   const [codes, setCodes] = useState<string[]>([])
 
   useEffect(() => {
