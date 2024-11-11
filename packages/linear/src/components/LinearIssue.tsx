@@ -1,5 +1,4 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
-import { Branch, Merge, PR, PRClosed, PRDraft } from '@repo/github'
 import { Tooltip } from '@repo/ui'
 import { cn } from '@repo/utils'
 import { useQuery } from 'react-query'
@@ -12,6 +11,7 @@ import { getLinearClient } from '../client'
 
 import { Avatar } from './Avatar'
 import { Assignee, EstimateIcon, LinearIcon } from './icons'
+import { PRPopover } from './PRPopover'
 
 export const LinearIssue = ({ code }: { code: string }) => {
   const fetchIssue = useQuery({
@@ -38,7 +38,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
   const assignee = fetchAssignee.data
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-gray-300 last:border-0 px-4 py-2">
+    <div className="flex items-center justify-between gap-1.5 border-b border-gray-300 last:border-0 px-4 py-2">
       <div className="flex gap-1.5 items-center">
         <Tooltip content="Manage priority" on={['hover', 'focus']}>
           <PriorityPopover issue={issue} />
@@ -83,12 +83,8 @@ export const LinearIssue = ({ code }: { code: string }) => {
           </div>
         )}
       </div>
-      <div className="flex flex-1 gap-1.5 items-center justify-end">
-        <Branch />
-        <Merge />
-        <PR />
-        <PRClosed />
-        <PRDraft />
+      <div className="flex gap-1.5 items-center justify-end">
+        <PRPopover issue={issue} />
         {issue ? (
           <Tooltip
             content={
