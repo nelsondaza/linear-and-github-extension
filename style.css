@@ -7,3 +7,7 @@
     @apply inline-block align-middle;
   }
 }
+
+#plasmo-shadow-container {
+  z-index: auto !important;
+}
