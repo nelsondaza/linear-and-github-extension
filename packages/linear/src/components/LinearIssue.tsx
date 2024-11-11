@@ -1,4 +1,5 @@
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import { Branch, Merge, PR, PRClosed, PRDraft } from '@repo/github'
 import { Tooltip } from '@repo/ui'
 import { cn } from '@repo/utils'
 import { useQuery } from 'react-query'
@@ -37,12 +38,16 @@ export const LinearIssue = ({ code }: { code: string }) => {
   const assignee = fetchAssignee.data
 
   return (
-    <div className="flex flex-wrap gap-1.5 items-center justify-between border-b border-gray-300 last:border-0 px-4 py-2">
+    <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-gray-300 last:border-0 px-4 py-2">
       <div className="flex gap-1.5 items-center">
-        <PriorityPopover issue={issue} />
+        <Tooltip content="Manage priority" on={['hover', 'focus']}>
+          <PriorityPopover issue={issue} />
+        </Tooltip>
         <div className="text-sm text-gray-500 min-w-16">{code}</div>
         {state ? (
-          <StatusPopover issue={issue} status={state} />
+          <Tooltip content="Manage state" on={['hover', 'focus']}>
+            <StatusPopover issue={issue} status={state} />
+          </Tooltip>
         ) : (
           <LinearIcon
             className={cn(
@@ -55,7 +60,12 @@ export const LinearIssue = ({ code }: { code: string }) => {
         )}
         {issue ? (
           <div className="text-sm">
-            <a className="hover:text-black hover:underline underline-offset-3" href={issue.url} target={code}>
+            <a
+              className="hover:text-black hover:underline underline-offset-3 line-clamp-2"
+              href={issue.url}
+              target={code}
+              title={issue.title || ''}
+            >
               {issue.title || ''}
             </a>
           </div>
@@ -73,17 +83,26 @@ export const LinearIssue = ({ code }: { code: string }) => {
           </div>
         )}
       </div>
-      <div className="flex gap-1.5 items-center">
+      <div className="flex flex-1 gap-1.5 items-center justify-end">
+        <Branch />
+        <Merge />
+        <PR />
+        <PRClosed />
+        <PRDraft />
         {issue ? (
-          <div className="flex items-center text-sm whitespace-nowrap text-gray-500">
-            {issue.estimate === undefined ? (
-              ''
-            ) : (
-              <>
-                <EstimateIcon /> {issue.estimate}
-              </>
-            )}
-          </div>
+          <Tooltip
+            content={
+              <div className="flex items-center gap-1">
+                <EstimateIcon />
+                <span>{issue.estimate || '~'}</span>
+                <span>{issue.estimate === undefined ? 'No estimate' : 'Points'}</span>
+              </div>
+            }
+          >
+            <div className="flex items-center text-sm whitespace-nowrap text-gray-500">
+              <EstimateIcon /> {issue.estimate || '~'}
+            </div>
+          </Tooltip>
         ) : null}
         {assignee ? (
           assignee.avatarUrl ? (
