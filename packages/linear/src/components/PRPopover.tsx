@@ -29,7 +29,7 @@ const usePRsFromDescription = (issue: IssueSearchResult) => {
 
   return useMemo(() => {
     const map = new Map<string, { number: string; texts: Set<string> }>()
-    texts.forEach((text) => {
+    texts?.forEach((text) => {
       const [_t, _p, url, number] = text.match(/(\()(https:\/\/github\.com\/.+\/pull\/(\d+))/i) || []
       if (url) {
         const item = map.get(url) || { number, texts: new Set<string>() }
@@ -40,7 +40,7 @@ const usePRsFromDescription = (issue: IssueSearchResult) => {
 
     return map
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [texts.toString()])
+  }, [texts?.toString()])
 }
 
 function StateIcon({ state, states = [] }: { state: WorkflowState; states?: WorkflowState[] }) {
