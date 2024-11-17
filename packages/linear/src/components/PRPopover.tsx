@@ -25,7 +25,7 @@ interface PRPopoverProps {
 }
 
 const usePRsFromDescription = (issue: IssueSearchResult) => {
-  const texts = issue?.description?.match(/\[.+]\(https:\/\/github\.com\/.+\/pull\/\d+.*\)/gim) || []
+  const texts = issue?.description?.match(/\[.+]\(https:\/\/github\.com\/.+\/pull\/\d+.*\)/gim)
 
   return useMemo(() => {
     const map = new Map<string, { number: string; texts: Set<string> }>()
