@@ -1,3 +1,4 @@
+import { TrashIcon } from '@heroicons/react/24/outline'
 import { Branch, Merge, PR, PRClosed, PRDraft } from '@repo/github'
 import { Tooltip } from '@repo/ui'
 import { cn, queryClient } from '@repo/utils'
@@ -191,28 +192,28 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
       ) : (
         <Tooltip
           content={
-            <div className="flex flex-col gap-1 p-1">
-              <div className="flex flex-col gap-1 text-xl">
+            <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1 pt-1 text-xl overflow-y-auto">
                 {prs
                   .entries()
                   .toArray()
                   .map(([url, pr], index, list) => (
-                    <div key={url} className="flex items-center gap-1 p-1">
+                    <div key={url} className="flex items-center gap-1 p-1 rounded border hover:bg-gray-50">
                       <PR className="shrink text-green-700" />
                       <div className="grow text-gray-500">
-                        <a href={url} target={`lage-pr${pr.number}`}>
+                        <a href={url} target={`_lage-pr${pr.number}`}>
                           {list.length > 1 && `${index + 1}. `} PR #{pr.number}
                         </a>
                       </div>
                       <Tooltip content="Remove this reference">
-                        <button onClick={removePRReference(url)} type="button">
-                          <CheckIcon className="text-green-700" />
+                        <button className="flex items-center" onClick={removePRReference(url)} type="button">
+                          <TrashIcon className="size-4 text-red-700" />
                         </button>
                       </Tooltip>
                     </div>
                   ))}
               </div>
-              <div className="text-center p-1 font-bold border-t">
+              <div className="text-center font-bold pt-1">
                 Click the icon to keep
                 <br />
                 this popup open

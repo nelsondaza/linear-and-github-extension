@@ -84,7 +84,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
         )}
       </div>
       <div className="flex gap-1.5 items-center justify-end">
-        <PRPopover issue={issue} />
+        {issue ? <PRPopover issue={issue} /> : null}
         {issue ? (
           <Tooltip
             content={
