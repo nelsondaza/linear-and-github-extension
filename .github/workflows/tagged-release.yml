@@ -1,9 +1,13 @@
-name: Create binary for release
+name: Create binary and release
+
+concurrency:
+  group: production
+  cancel-in-progress: true
 
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*.*.*'
   workflow_dispatch:
     inputs:
       retention_days:
@@ -16,11 +20,12 @@ on:
         default: '20.x'
 
 jobs:
-  build:
+  release:
     permissions:
       contents: write
       discussions: write
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -71,3 +76,13 @@ jobs:
         with:
           path: build/lage-*.zip
           retention-days: ${{ inputs.retention_days }}
+
+      - name: Publish to Chrome Web Store
+        uses: mobilefirstllc/cws-publish@latest
+        with:
+          action: 'publish'
+          client_id: ${{ secrets.CWS_CLIENT_ID }}
+          client_secret: ${{ secrets.CWS_CLIENT_SECRET }}
+          extension_id: ${{ secrets.CWS_EXTENSION_ID }}
+          refresh_token: ${{ secrets.CWS_REFRESH_TOKEN }}
+          zip_file: build/lage-prod.zip
