@@ -106,7 +106,9 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
     await updateDescription.mutateAsync()
   }
 
-  // const icon = updateStatus.isLoading ? <StateBacklog className="animate-spin text-gray-500" /> : <CheckIcon />
+  if (prs.size <= 0 && !linkToCurrentPR) {
+    return null
+  }
 
   return (
     <div className={cn('PRPopover', className)}>
