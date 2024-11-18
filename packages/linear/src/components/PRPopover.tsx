@@ -1,5 +1,4 @@
 import { TrashIcon } from '@heroicons/react/24/outline'
-import { PlusIcon } from '@heroicons/react/24/solid'
 import { Branch, Merge, PR, PRClosed, PRDraft } from '@repo/github'
 import { Tooltip } from '@repo/ui'
 import { cn, queryClient } from '@repo/utils'
@@ -198,19 +197,16 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
             <div className="flex flex-col gap-1">
               <div className="flex flex-col gap-1 pt-1 text-xl overflow-y-auto">
                 {isCurrentPRInIssue ? null : (
-                  <div className="flex items-center gap-2 p-1 rounded border hover:bg-gray-50">
-                    <PRDraft className="text-gray-400" />
-                    <div className="grow text-gray-500">Current PR not in Linear</div>
-                    <Tooltip content="Add reference">
-                      <button
-                        className="flex items-center border rounded p-0.5 bg-white hover:bg-gray-50"
-                        onClick={addCurrentPR}
-                        type="button"
-                      >
-                        <PlusIcon className="size-4 text-gray-700" />
-                      </button>
-                    </Tooltip>
-                  </div>
+                  <Tooltip content="Add a reference to this PR">
+                    <button
+                      className="flex items-center gap-2 p-1 rounded border hover:bg-gray-50"
+                      onClick={addCurrentPR}
+                      type="button"
+                    >
+                      <PRDraft className="text-gray-400" />
+                      <div className="grow text-gray-500">Add this PR to Linear</div>
+                    </button>
+                  </Tooltip>
                 )}
                 {prs
                   .entries()
