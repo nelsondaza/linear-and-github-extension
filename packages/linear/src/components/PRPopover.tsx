@@ -118,9 +118,13 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
       {prs.size <= 0 ? (
         <Tooltip
           content={
-            <div>
-              <div>There are no PRs in the issues.</div>
-              <div>Click to add the current PR.</div>
+            <div className="text-center text-sm">
+              <div>There are no PRs in the issue</div>
+              <div className="p-1 font-bold">
+                Click the icon below
+                <br />
+                to add this PR
+              </div>
             </div>
           }
           on={['hover', 'focus']}
@@ -132,23 +136,34 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
       ) : (
         <Tooltip
           content={
-            <div>
-              {prs
-                .entries()
-                .toArray()
-                .map(([key, pr], index, list) => (
-                  <div key={key} className="flex items-center gap-1">
-                    <PR className="text-green-700" />
-                    {list.length > 1 && <div className="text-sm text-gray-500 min-w-16">{index + 1}</div>}
-                  </div>
-                ))}
+            <div className="flex flex-col gap-1 p-1">
+              <div>
+                {prs
+                  .entries()
+                  .toArray()
+                  .map(([url, pr], index, list) => (
+                    <div key={url} className="flex items-center gap-1 p-1">
+                      <PR className="text-green-700" />
+                      <div className="text-gray-500">
+                        <a href={url} target={`lage-pr${pr.number}`}>
+                          {list.length > 1 && `${index + 1}. `}#{pr.number}
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+              <div className="text-center text-sm p-1 font-bold">
+                Click the icon below
+                <br />
+                to keep managing
+              </div>
             </div>
           }
         >
-          <div className="flex items-center gap-1">
+          <button className="flex items-center gap-1" type="button">
             <PR className="text-green-700" />
-            {prs.size > 1 && <div className="text-sm text-gray-500 min-w-16">{prs.size}</div>}
-          </div>
+            {prs.size > 1 && <div className="text-sm text-gray-500">{prs.size}</div>}
+          </button>
         </Tooltip>
       )}
     </div>
