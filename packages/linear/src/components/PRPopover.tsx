@@ -1,4 +1,5 @@
 import { TrashIcon } from '@heroicons/react/24/outline'
+import { PlusIcon } from '@heroicons/react/24/solid'
 import { Branch, Merge, PR, PRClosed, PRDraft } from '@repo/github'
 import { Tooltip } from '@repo/ui'
 import { cn, queryClient } from '@repo/utils'
@@ -67,22 +68,24 @@ const getPRLinkByURL = () => {
   const [URL, , number] = document.location?.href?.match(/(.*\/pull\/)(\d+)/) || []
 
   if (number) {
-    return `[GitHub Pull Request #${number}](${URL})`
+    return { link: `[GitHub Pull Request #${number}](${URL})`, number }
   }
-  return ''
+  return { link: '', number: '' }
 }
 
 export const PRPopover = ({ className, issue }: PRPopoverProps) => {
   const prs = usePRsFromDescription(issue)
 
-  const linkToCurrentPR = getPRLinkByURL()
+  const currentPR = getPRLinkByURL()
+
+  const isCurrentPRInIssue = prs.values().some((pr) => pr.number === currentPR.number)
 
   const queryKey = ['linear', 'issues', issue?.identifier, 'issue']
 
   const addCurrentPRToDescription = useMutation({
     mutationFn: async () => {
       await getLinearClient().updateIssue(issue.id, {
-        description: [issue.description?.trim() || '', linkToCurrentPR].filter(Boolean).join('\n\n'),
+        description: [issue.description?.trim() || '', currentPR.link].filter(Boolean).join('\n\n'),
       })
     },
     onError: (_error, _, context: { previousIssueFetch: IssueSearchPayload }) => {
@@ -96,7 +99,7 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
         nodes: [
           {
             ...previousIssueFetch.nodes[0],
-            description: [issue.description?.trim() || '', linkToCurrentPR].filter(Boolean).join('\n\n'),
+            description: [issue.description?.trim() || '', currentPR.link].filter(Boolean).join('\n\n'),
           },
         ],
       })
@@ -160,7 +163,7 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
     await removePRFromDescription.mutateAsync(url)
   }
 
-  if (prs.size <= 0 && !linkToCurrentPR) {
+  if (prs.size <= 0 && !currentPR.link) {
     return null
   }
 
@@ -194,11 +197,26 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
           content={
             <div className="flex flex-col gap-1">
               <div className="flex flex-col gap-1 pt-1 text-xl overflow-y-auto">
+                {isCurrentPRInIssue ? null : (
+                  <div className="flex items-center gap-2 p-1 rounded border hover:bg-gray-50">
+                    <PRDraft className="text-gray-400" />
+                    <div className="grow text-gray-500">Current PR not in Linear</div>
+                    <Tooltip content="Add reference">
+                      <button
+                        className="flex items-center border rounded p-0.5 bg-white hover:bg-gray-50"
+                        onClick={addCurrentPR}
+                        type="button"
+                      >
+                        <PlusIcon className="size-4 text-gray-700" />
+                      </button>
+                    </Tooltip>
+                  </div>
+                )}
                 {prs
                   .entries()
                   .toArray()
                   .map(([url, pr], index, list) => (
-                    <div key={url} className="flex items-center gap-1 p-1 rounded border hover:bg-gray-50">
+                    <div key={url} className="flex items-center gap-2 p-1 rounded border hover:bg-gray-50">
                       <PR className="shrink text-green-700" />
                       <div className="grow text-gray-500">
                         <a href={url} target={`_lage-pr${pr.number}`}>
@@ -206,7 +224,11 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
                         </a>
                       </div>
                       <Tooltip content="Remove this reference">
-                        <button className="flex items-center" onClick={removePRReference(url)} type="button">
+                        <button
+                          className="flex items-center border rounded p-0.5 bg-white hover:bg-gray-50"
+                          onClick={removePRReference(url)}
+                          type="button"
+                        >
                           <TrashIcon className="size-4 text-red-700" />
                         </button>
                       </Tooltip>
