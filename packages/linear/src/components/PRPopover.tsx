@@ -61,7 +61,7 @@ function StateIcon({ state, states = [] }: { state: WorkflowState; states?: Work
 }
 
 const getPRLinkByURL = () => {
-  const [URL, , number] = document.location.href.match(/(.*\/pull\/)(\d+)/)
+  const [URL, , number] = document.location?.href?.match(/(.*\/pull\/)(\d+)/) || []
 
   if (number) {
     return `[GitHub Pull Request #${number}](${URL})`
