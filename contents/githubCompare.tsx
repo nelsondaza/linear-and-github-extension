@@ -26,7 +26,7 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () => ({
 })
 
 // Use this to optimize unmount lookups
-export const getShadowHostId = () => 'plasmo-inline-example-unique-id'
+export const getShadowHostId = () => 'lage-compare-header'
 
 const PlasmoInline = () => {
   const codes = useCompareCodes()
@@ -35,31 +35,37 @@ const PlasmoInline = () => {
   return (
     <QueryClientProvider>
       <div className="w-full mt-2" ref={setTooltipRoot}>
-        {linearClient ? (
-          <div className="border border-gray-300 rounded-md w-full">
-            {codes.length === 0 && (
-              <div className="flex gap-1.5 items-center px-4 py-2 text-sm">
-                <img alt="LAGE Icon" className="size-8" src={iconImage} />
-                <Tooltip
-                  content={
-                    <div>
-                      Add your Linear issue code(s) in the <br />
-                      Summary or the Title to see them here.
+        <div className="border border-gray-300 rounded-md w-full">
+          {linearClient ? (
+            <>
+              {codes.length === 0 && (
+                <div className="flex gap-1.5 items-center px-4 py-2 text-sm">
+                  <img alt="LAGE Icon" className="size-8" src={iconImage} />
+                  <Tooltip
+                    content={
+                      <div>
+                        Add your Linear issue code(s) in the <br />
+                        Summary or the Title to see them here.
+                      </div>
+                    }
+                  >
+                    <div className="flex gap-1.5 items-center">
+                      <div>No Linear issue codes found</div>
+                      <InformationCircleIcon className="size-4 align-top text-blue-600" />
                     </div>
-                  }
-                >
-                  <div className="flex gap-1.5 items-center">
-                    <div>No Linear issue codes found</div>
-                    <InformationCircleIcon className="size-4 align-top text-blue-600" />
-                  </div>
-                </Tooltip>
-              </div>
-            )}
-            {codes.map((code) => (
-              <LinearIssue key={code} code={code} />
-            ))}
-          </div>
-        ) : null}
+                  </Tooltip>
+                </div>
+              )}
+              {codes.map((code) => (
+                <LinearIssue key={code} code={code} />
+              ))}
+            </>
+          ) : (
+            <div className="flex gap-1.5 items-center px-4 py-2 text-sm">
+              <img alt="LAGE Icon" className="size-8" src={iconImage} /> Linear not connected
+            </div>
+          )}
+        </div>
       </div>
     </QueryClientProvider>
   )
