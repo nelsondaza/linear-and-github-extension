@@ -64,10 +64,13 @@ jobs:
           mv /tmp/package.json package.json
 
       - name: Build dev extension
-        run: pnpm build --target=lage- --zip --tag=dev
+        run: |
+          pnpm build --target=lage- --zip --tag=dev
 
       - name: Build prod extension
-        run: pnpm build --target=lage- --zip --tag=prod
+        run: |
+          pnpm build --target=lage-
+          pnpm package --target=lage-
 
       - name: Release
         uses: softprops/action-gh-release@v2
