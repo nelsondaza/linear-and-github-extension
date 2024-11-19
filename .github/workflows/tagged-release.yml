@@ -35,10 +35,11 @@ jobs:
         with:
           run_install: false
 
-      - name: Get pnpm store directory
+      - name: Set global variables
         shell: bash
         run: |
           echo "PNPM_STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
 
       - name: Cache modules
         uses: actions/cache@v4
@@ -56,6 +57,11 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Set release version
+        run: |
+          jq '.version="${{ env.RELEASE_VERSION }}"' package.json > /tmp/package.json
+          mv /tmp/package.json package.json
 
       - name: Build dev extension
         run: pnpm build --target=lage- --zip --tag=dev
@@ -80,7 +86,7 @@ jobs:
       - name: Publish to Chrome Web Store
         uses: mobilefirstllc/cws-publish@latest
         with:
-          action: 'publish'
+          action: 'upload'
           client_id: ${{ secrets.CWS_CLIENT_ID }}
           client_secret: ${{ secrets.CWS_CLIENT_SECRET }}
           extension_id: ${{ secrets.CWS_EXTENSION_ID }}
