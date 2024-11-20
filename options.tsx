@@ -23,12 +23,19 @@ function Options() {
       </div>
       <div className="flex flex-col gap-2 border rounded">
         <div className="font-bold text-lg">Linear configuration</div>
+        <div>
+          The extension requires to interact with the Linear API in order to access and manipulate data such as updating
+          or retrieving issues and tasks.
+        </div>
         <div className="border-b" />
         <div>
           <Input
             label="API KEY"
             labelComment={
-              <a href="https://nelsondaza.github.io/linear-and-github-extension/API_KEY.html" target="linear_api_key">
+              <a
+                href="https://nelsondaza.github.io/linear-and-github-extension/linear_API_KEY.html"
+                target="linear_api_key"
+              >
                 see docs here
               </a>
             }

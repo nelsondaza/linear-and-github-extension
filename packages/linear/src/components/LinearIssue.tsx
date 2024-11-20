@@ -72,7 +72,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
         ) : (
           <div className="text-sm">
             {fetchIssue.isError ? (
-              <Tooltip content="Check extension's options for the correct API_KEY.">
+              <Tooltip content="Check extension's options for the correct Linear's API_KEY.">
                 <span className="text-red-500">
                   Linear connection error <InformationCircleIcon className="size-4 align-top" />
                 </span>
