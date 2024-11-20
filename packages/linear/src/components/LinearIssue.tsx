@@ -15,11 +15,11 @@ import { PRPopover } from './PRPopover'
 
 export const LinearIssue = ({ code }: { code: string }) => {
   const fetchIssue = useQuery({
-    queryFn: async () => getLinearClient().searchIssues(code),
+    queryFn: async () => getLinearClient().issue(code),
     queryKey: ['linear', 'issues', code, 'issue'],
   })
 
-  const issue = fetchIssue.data?.nodes?.at(0)
+  const issue = fetchIssue.data
 
   const fetchIssueState = useQuery({
     enabled: !!issue,
@@ -53,7 +53,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
             className={cn(
               fetchIssue.isFetching && 'text-orange-500',
               fetchIssue.isFetched && 'text-indigo-500',
-              fetchIssue.isFetched && fetchIssue.data?.totalCount < 1 && 'text-gray-600',
+              fetchIssue.isFetched && !issue && 'text-gray-600',
               fetchIssue.isError && 'text-red-600',
             )}
           />

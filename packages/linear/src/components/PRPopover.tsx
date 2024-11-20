@@ -5,7 +5,7 @@ import { cn, queryClient } from '@repo/utils'
 import { useMemo } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
-import type { IssueSearchPayload, IssueSearchResult, WorkflowState } from '@linear/sdk'
+import type { Issue, IssueSearchPayload, WorkflowState } from '@linear/sdk'
 
 import { getLinearClient } from '../client'
 
@@ -20,14 +20,14 @@ import {
 } from './icons'
 
 interface PRPopoverProps {
-  issue: IssueSearchResult
+  issue: Issue
 
   className?: string
 }
 
 const PR_REFERENCE_REPLACE_KEY = '<!-- __PR_REFERENCE__ -->'
 
-const usePRsFromDescription = (issue: IssueSearchResult) => {
+const usePRsFromDescription = (issue: Issue) => {
   const texts = issue?.description?.match(/\[.+]\(https:\/\/github\.com\/.+\/pull\/\d+.*\)/gim)
 
   return useMemo(() => {

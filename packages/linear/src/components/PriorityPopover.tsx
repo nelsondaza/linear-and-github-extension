@@ -2,13 +2,13 @@ import { Tooltip } from '@repo/ui'
 import { queryClient } from '@repo/utils'
 import { useMutation } from 'react-query'
 
-import type { IssueSearchPayload, IssueSearchResult } from '@linear/sdk'
+import type { Issue, IssueSearchPayload } from '@linear/sdk'
 import { getLinearClient, StateBacklog } from '@repo/linear'
 
 import { CheckIcon, PriorityHigh, PriorityLow, PriorityMedium, PriorityNone, PriorityUrgent } from './icons'
 
 interface PriorityPopoverProps {
-  issue: IssueSearchResult
+  issue: Issue
 }
 
 export const PriorityPopover = ({ issue }: PriorityPopoverProps) => {

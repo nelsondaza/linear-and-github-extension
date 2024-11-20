@@ -3,7 +3,7 @@ import { queryClient } from '@repo/utils'
 import { useMemo } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
-import type { IssueSearchResult, WorkflowState } from '@linear/sdk'
+import type { Issue, WorkflowState } from '@linear/sdk'
 
 import { getLinearClient } from '../client'
 
@@ -18,11 +18,11 @@ import {
 } from './icons'
 
 interface StatusPopoverProps {
-  issue: IssueSearchResult
+  issue: Issue
   status: WorkflowState
 }
 
-const useTeamStates = (issue: IssueSearchResult) => {
+const useTeamStates = (issue: Issue) => {
   const teamFetch = useQuery({
     enabled: !!issue,
     queryFn: async () => issue.team,
