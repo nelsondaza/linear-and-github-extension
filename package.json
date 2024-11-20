@@ -63,7 +63,10 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
+      "*://github.com/*",
+      "*://*.github.com/*",
+      "*://linear.app/*",
+      "*://*.linear.app/*"
     ]
   }
 }
