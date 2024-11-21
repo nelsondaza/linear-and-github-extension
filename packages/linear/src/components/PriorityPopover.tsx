@@ -16,7 +16,7 @@ export const PriorityPopover = ({ issue }: PriorityPopoverProps) => {
 
   const updateIssue = useMutation({
     mutationFn: async (_priority: number) => {
-      await getLinearClient().updateIssue(issue.id, { priority: _priority })
+      await getLinearClient(issue.id).updateIssue(issue.id, { priority: _priority })
     },
     onError: (_error, _priority, context: { previousIssueFetch: IssueSearchPayload }) => {
       queryClient.setQueryData(queryKey, context.previousIssueFetch)

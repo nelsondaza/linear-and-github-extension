@@ -83,7 +83,7 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
 
   const addCurrentPRToDescription = useMutation({
     mutationFn: async () => {
-      await getLinearClient().updateIssue(issue.id, {
+      await getLinearClient(issue.id).updateIssue(issue.id, {
         description: [issue.description?.trim() || '', currentPR.link].filter(Boolean).join('\n\n'),
       })
     },
@@ -129,7 +129,7 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
       const newDescription = removePRReferenceFromDescription(url, issue.description)
 
       if (newDescription !== issue.description) {
-        await getLinearClient().updateIssue(issue.id, {
+        await getLinearClient(issue.id).updateIssue(issue.id, {
           description: newDescription,
         })
       }

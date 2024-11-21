@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer components {
+  body {
+    font-size: 100%;
+  }
+
   svg {
     @apply inline-block align-middle;
   }

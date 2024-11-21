@@ -15,7 +15,7 @@ import { PRPopover } from './PRPopover'
 
 export const LinearIssue = ({ code }: { code: string }) => {
   const fetchIssue = useQuery({
-    queryFn: async () => getLinearClient().issue(code),
+    queryFn: async () => getLinearClient(code).issue(code),
     queryKey: ['linear', 'issues', code, 'issue'],
   })
 
@@ -43,7 +43,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
         <Tooltip content="Manage priority" on={['hover', 'focus']}>
           <PriorityPopover issue={issue} />
         </Tooltip>
-        <div className="text-sm text-gray-500 min-w-16">{code}</div>
+        <div className="text-gray-500 min-w-16">{code}</div>
         {state ? (
           <Tooltip content="Manage state" on={['hover', 'focus']}>
             <StatusPopover issue={issue} status={state} />
@@ -59,7 +59,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
           />
         )}
         {issue ? (
-          <div className="text-sm">
+          <div>
             <a
               className="hover:text-black hover:underline underline-offset-3 line-clamp-2"
               href={issue.url}
@@ -70,7 +70,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
             </a>
           </div>
         ) : (
-          <div className="text-sm">
+          <div>
             {fetchIssue.isError ? (
               <Tooltip content="Check extension's options for the correct Linear's API_KEY.">
                 <span className="text-red-500">
@@ -95,7 +95,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
               </div>
             }
           >
-            <div className="flex items-center text-sm whitespace-nowrap text-gray-500">
+            <div className="flex items-center whitespace-nowrap text-gray-500">
               <EstimateIcon /> {issue.estimate || '~'}
             </div>
           </Tooltip>

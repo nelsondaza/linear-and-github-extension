@@ -140,7 +140,7 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(
                 style: floating.context.floatingStyles,
               })}
               className={cn(
-                'Tooltip z-[1900] bg-white border border-gray-400 stroke-gray-400 rounded-md shadow-md text-xs px-2 py-1',
+                'Tooltip z-[1900] bg-white border border-gray-400 stroke-gray-400 rounded-md shadow-md px-2 py-1',
                 className,
               )}
             >
