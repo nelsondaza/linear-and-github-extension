@@ -9,7 +9,7 @@ import { Button, Tooltip } from '@repo/ui'
 import type { AccentColor } from '../contants'
 import type { ReactNode } from 'react'
 
-export interface DrawerProps extends Omit<DialogProps, 'onClose'> {
+export interface ModalProps extends Omit<DialogProps, 'onClose'> {
   children: ReactNode
 
   accent?: AccentColor
@@ -24,10 +24,9 @@ export interface DrawerProps extends Omit<DialogProps, 'onClose'> {
   onOpenChange?: (open: boolean) => void
   open?: boolean
   panelClassName?: string
-  placement?: 'left' | 'right'
 }
 
-export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
+export const Modal = forwardRef<HTMLDivElement, ModalProps>(
   (
     {
       accent = 'default',
@@ -43,7 +42,6 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
       onOpenChange: setControlledOpen,
       open: controlledOpen,
       panelClassName,
-      placement = 'right',
       ...props
     },
     ref,
@@ -57,7 +55,7 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
     }
 
     return (
-      <Dialog {...props} className={cn('Drawer relative z-modals', className)} onClose={onClose} open={open} ref={ref}>
+      <Dialog {...props} className={cn('Modal relative z-modals', className)} onClose={onClose} open={open} ref={ref}>
         <DialogBackdrop
           className={cn(
             'fixed inset-0',
@@ -73,23 +71,20 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
         <div
           className={cn(
-            'fixed inset-0 flex items-start overflow-hidden py-0.5',
-            placement === 'right' ? 'justify-end' : 'justify-start',
+            'fixed inset-0 flex justify-center items-end sm:items-center overflow-hidden',
+            'p-4 sm:p-8 md:p-10 lg:p-20 xl:p-24 2xl:p-32',
           )}
           onClick={onClose}
         >
           <DialogPanel
             className={cn(
-              'flex flex-col relative overflow-hidden bg-white text-left',
-              'h-full max-h-full max-w-90/100 sm:w-fit',
-              'transition duration-300',
-              'data-[closed]:opacity-0',
-              placement === 'right'
-                ? 'rounded-l-lg data-[closed]:translate-x-full hcm:border-l'
-                : 'rounded-r-lg data-[closed]:-translate-x-full hcm:border-r',
+              'flex flex-col relative overflow-hidden rounded-lg bg-white text-left shadow-xl',
+              'max-h-full max-w-full sm:w-fit',
+              'transition duration-200',
+              'data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95',
               'data-[enter]:duration-300 data-[enter]:ease-out',
               'data-[leave]:duration-200 data-[leave]:ease-in',
-              'hcm:opacity-100 hcm:border-y hcm:border-black',
+              'hcm:opacity-100 hcm:border hcm:border-black',
               panelClassName,
             )}
             transition
@@ -127,4 +122,4 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
   },
 )
 
-Drawer.displayName = 'Drawer'
+Modal.displayName = 'Modal'

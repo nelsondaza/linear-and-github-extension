@@ -17,17 +17,16 @@ import {
 } from '@floating-ui/react'
 import { cn } from '@repo/utils'
 import { cloneElement, forwardRef, isValidElement, useRef, useState } from 'react'
-import * as React from 'react'
 
 import type { FloatingPortalProps, Placement } from '@floating-ui/react'
 
-import type { ReactElement, ReactNode } from 'react'
+import type { MutableRefObject, ReactElement, ReactNode } from 'react'
 
 const ARROW_SIZE_PX = 6
 const OFFSET_PX = 2
-let tooltipRoot: HTMLElement | null | React.MutableRefObject<HTMLElement | null> = null
+let tooltipRoot: HTMLElement | MutableRefObject<HTMLElement | null> | null = null
 
-export const setTooltipRoot = (newRoot: HTMLElement | null | React.MutableRefObject<HTMLElement | null>) => {
+export const setTooltipRoot = (newRoot: HTMLElement | MutableRefObject<HTMLElement | null> | null) => {
   tooltipRoot = newRoot
 }
 
@@ -36,6 +35,7 @@ export interface TooltipProps extends FloatingPortalProps {
   content: ReactNode
 
   className?: string
+  disabled?: boolean
   initialOpen?: boolean
   on?: 'click' | 'focus' | 'hover' | ('click' | 'focus' | 'hover')[]
   onOpenChange?: (open: boolean) => void
@@ -50,6 +50,7 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(
       children,
       className,
       content,
+      disabled,
       initialOpen = false,
       on = ['click', 'focus', 'hover'],
       onOpenChange: setControlledOpen,
@@ -132,17 +133,17 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(
     return (
       <>
         {trigger}
-        {floating.context.open ? (
+        {floating.context.open && !disabled && content ? (
           <FloatingPortal id={id} preserveTabOrder={preserveTabOrder} root={root}>
             <div
               {...interactions.getFloatingProps({
+                className: cn(
+                  'Tooltip z-modals bg-white border border-greyDark stroke-greyDark rounded-md shadow-md text-xs px-2 py-1',
+                  className,
+                ),
                 ref: floating.context.refs.setFloating,
                 style: floating.context.floatingStyles,
               })}
-              className={cn(
-                'Tooltip z-[1900] bg-white border border-gray-400 stroke-gray-400 rounded-md shadow-md px-2 py-1',
-                className,
-              )}
             >
               {content}
               <FloatingArrow

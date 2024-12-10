@@ -75,20 +75,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {required ? <sup className="text-red pl-1 leading-4 align-top">*</sup> : ''}
             {labelInfo ? (
               <Tooltip content={labelInfo}>
-                <span>
-                  <InformationCircleIcon className="size-4 ml-1 leading-4 text-blue align-top cursor-pointer" />
-                </span>
+                <InformationCircleIcon className="size-4 ml-1 leading-4 text-blue align-top cursor-pointer" />
               </Tooltip>
             ) : null}
           </label>
         ) : null}
-        {error ? (
-          <Tooltip className="border-redLight stroke-redLight" content={error} initialOpen>
-            {input}
-          </Tooltip>
-        ) : (
-          input
-        )}
+        <Tooltip className="border-redLight stroke-redLight" content={error} disabled={!error} initialOpen>
+          {input}
+        </Tooltip>
       </div>
     )
   },
