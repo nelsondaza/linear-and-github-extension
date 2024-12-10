@@ -114,6 +114,7 @@ const config: Omit<Config, 'content'> = {
         inherit: 'inherit',
         lg: '0.5em',
         md: '0.375em',
+
         none: '0',
         sm: '0.125em',
         xl: '0.75em',
@@ -121,6 +122,7 @@ const config: Omit<Config, 'content'> = {
       borderWidth: {
         0: '0',
         1: '0.0625em',
+
         2: '0.125em',
         4: '0.25em',
         6: '0.375em',
@@ -138,6 +140,7 @@ const config: Omit<Config, 'content'> = {
       columns: {
         '2xl': '42em',
         '2xs': '18em',
+
         '3xl': '48em',
         '3xs': '16em',
         '4xl': '56em',
@@ -158,18 +161,22 @@ const config: Omit<Config, 'content'> = {
       },
       fontFamily: {
         inherit: 'inherit',
+        'inherit-family': 'inherit',
       },
       fontSize: {
         '2xl': ['1.5em', { lineHeight: '1.3125em' }],
         '3xl': ['1.875em', { lineHeight: '1.3125em' }],
+
         '4xl': ['2.25em', { lineHeight: '1.3125em' }],
         '5xl': ['3em', { lineHeight: '1.3125em' }],
         '6xl': ['3.75em', { lineHeight: '1.3125em' }],
         '7xl': ['4.5em', { lineHeight: '1.3125em' }],
         '8xl': ['6em', { lineHeight: '1.3125em' }],
+
         '9xl': ['8em', { lineHeight: '1.3125em' }],
         base: ['1em', { lineHeight: '1.3125em' }],
         inherit: 'inherit',
+        'inherit-size': 'inherit',
         lg: ['1.125em', { lineHeight: '1.3125em' }],
         sm: ['0.875em', { lineHeight: '1.3125em' }],
         xl: ['1.25em', { lineHeight: '1.3125em' }],
@@ -178,10 +185,12 @@ const config: Omit<Config, 'content'> = {
       },
       fontWeight: {
         inherit: 'inherit',
+        'inherit-weight': 'inherit',
       },
       letterSpacing: {
         inherit: 'inherit',
         normal: '0em',
+
         tight: '-0.025em',
         tighter: '-0.05em',
         wide: '0.025em',
@@ -190,6 +199,7 @@ const config: Omit<Config, 'content'> = {
       },
       lineHeight: {
         3: '.75em',
+
         4: '1em',
         5: '1.25em',
         6: '1.5em',
@@ -254,6 +264,7 @@ const config: Omit<Config, 'content'> = {
         3360: '3360px',
         3840: '3840px',
         'col-2-gaped': '39.5em',
+
         'cols-2-both-menus': '79.25em',
         'cols-2-left-menu': '50.5em',
         'cols-2-left-menu-mini': '42.5em',
@@ -266,6 +277,7 @@ const config: Omit<Config, 'content'> = {
       textDecorationThickness: {
         0: '0px',
         1: '0.0625em',
+
         2: '0.125em',
         4: '0.25em',
         8: '0.5em',
@@ -274,6 +286,7 @@ const config: Omit<Config, 'content'> = {
       },
       textUnderlineOffset: {
         0: '0px',
+
         1: '0.0625em',
         2: '0.125em',
         4: '0.25em',
@@ -285,6 +298,24 @@ const config: Omit<Config, 'content'> = {
         width: 'width',
       },
       width: spacing,
+      zIndex: {
+        0: 0,
+        1: 1,
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 5,
+        10: 10,
+        20: 20,
+        30: 30,
+        40: 40,
+        50: 50,
+
+        auto: 'auto',
+        max: 2000,
+        modals: 1000,
+        overModals: 1001,
+      },
     },
   },
   variants: { extend: {} },

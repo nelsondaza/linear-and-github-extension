@@ -82,7 +82,7 @@ export const StatusPopover = ({ issue, status }: StatusPopoverProps) => {
 
   const updateStatus = useMutation({
     mutationFn: async (_stateId: string) => {
-      await getLinearClient(issue.id).updateIssue(issue.id, { stateId: _stateId })
+      await getLinearClient(issue.identifier).updateIssue(issue.id, { stateId: _stateId })
     },
     onError: (_error, _priority, context: { previousStatusFetch: WorkflowState }) => {
       queryClient.setQueryData(queryKey, context.previousStatusFetch)
