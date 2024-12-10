@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 
-const useTitleCodes = () => {
-  const title = document.querySelector('#partial-discussion-header h1[class*="title"]')?.textContent || ''
-  return title.match(/([A-Z]{2,}-\d+)/gm) || []
-}
+import { getLinearCodes } from '@repo/linear'
+
+const useTitleCodes = () =>
+  getLinearCodes(document.querySelector('#partial-discussion-header h1[class*="title"]')?.textContent)
+
+const useMetaCodes = () =>
+  getLinearCodes(document.querySelector('#partial-discussion-header > div[class*="gh-header-meta"]')?.textContent)
 
 const useCommentCodes = () => {
   const [codes, setCodes] = useState<string[]>([])
@@ -14,7 +17,7 @@ const useCommentCodes = () => {
     // Create an observer instance linked to the callback function
     const observer = new MutationObserver(() => {
       const content = contentNode?.textContent || ''
-      setCodes(content.match(/([A-Z]{2,}-\d+)/gm) || [])
+      setCodes(getLinearCodes(content))
     })
 
     // Start observing the target node for configured mutations
@@ -32,10 +35,11 @@ const useCommentCodes = () => {
 export const usePullRequestCodes = () => {
   const titleCodes = useTitleCodes()
   const commentCodes = useCommentCodes()
+  const metaCodes = useMetaCodes()
 
   return useMemo(
     () =>
-      [...titleCodes, ...commentCodes]
+      [...titleCodes, ...commentCodes, ...metaCodes]
         .toSorted((a, b) => {
           if (a.length === b.length) {
             return a.localeCompare(b)
@@ -43,6 +47,6 @@ export const usePullRequestCodes = () => {
           return a.length - b.length
         })
         .filter((code, index, array) => array.lastIndexOf(code) === index),
-    [titleCodes.toString(), commentCodes.toString()],
+    [titleCodes.toString(), commentCodes.toString(), metaCodes.toString()],
   )
 }

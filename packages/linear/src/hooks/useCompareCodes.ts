@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { getLinearCodes } from '@repo/linear'
+
 import type { ChangeEventHandler } from 'react'
 
-const useRefCodes = () => {
-  const title = document.querySelector('#head-ref-selector')?.textContent || ''
-  return title.toLocaleUpperCase().match(/([A-Z]{2,}-\d+)/gm) || []
-}
+const useRefCodes = () => getLinearCodes(document.querySelector('#head-ref-selector')?.textContent)
+
+const useMetaCodes = () =>
+  getLinearCodes(document.querySelector('#partial-discussion-header > div[class*="gh-header-meta"]')?.textContent)
 
 const useTitleCodes = () => {
   const [codes, setCodes] = useState<string[]>([])
@@ -17,7 +19,7 @@ const useTitleCodes = () => {
     const onInputChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
       const content = target?.value || ''
       clearTimeout(timeout)
-      timeout = setTimeout(() => setCodes(content.match(/([A-Z]{2,}-\d+)/gm) || []), 1000)
+      timeout = setTimeout(() => setCodes(getLinearCodes(content)), 1000)
     }
 
     // @ts-ignore
@@ -46,7 +48,7 @@ const useDescriptionCodes = () => {
     const onInputChange: ChangeEventHandler<HTMLTextAreaElement> = ({ target }) => {
       const content = target?.value || ''
       clearTimeout(timeout)
-      timeout = setTimeout(() => setCodes(content.match(/([A-Z]{2,}-\d+)/gm) || []), 1000)
+      timeout = setTimeout(() => setCodes(getLinearCodes(content)), 1000)
     }
 
     // @ts-ignore
@@ -67,12 +69,13 @@ const useDescriptionCodes = () => {
 
 export const useCompareCodes = () => {
   const refCodes = useRefCodes()
-  const titieCodes = useTitleCodes()
+  const titleCodes = useTitleCodes()
   const descriptionCodes = useDescriptionCodes()
+  const metaCodes = useMetaCodes()
 
   return useMemo(
     () =>
-      [...refCodes, ...titieCodes, ...descriptionCodes]
+      [...refCodes, ...titleCodes, ...descriptionCodes, ...metaCodes]
         .toSorted((a, b) => {
           if (a.length === b.length) {
             return a.localeCompare(b)
@@ -80,6 +83,6 @@ export const useCompareCodes = () => {
           return a.length - b.length
         })
         .filter((code, index, array) => array.lastIndexOf(code) === index),
-    [refCodes.toString(), titieCodes.toString(), descriptionCodes.toString()],
+    [refCodes.toString(), titleCodes.toString(), descriptionCodes.toString(), metaCodes.toString()],
   )
 }
