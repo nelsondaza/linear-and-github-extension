@@ -138,7 +138,7 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(
             <div
               {...interactions.getFloatingProps({
                 className: cn(
-                  'Tooltip z-modals bg-white border border-greyDark stroke-greyDark rounded-md shadow-md text-xs px-2 py-1',
+                  'Tooltip z-modals bg-white border border-greyDark stroke-greyDark rounded-md shadow-md text-sm px-2 py-1',
                   className,
                 ),
                 ref: floating.context.refs.setFloating,

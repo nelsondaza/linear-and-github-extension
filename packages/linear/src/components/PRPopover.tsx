@@ -1,23 +1,13 @@
 import { TrashIcon } from '@heroicons/react/24/outline'
-import { Branch, Merge, PR, PRClosed, PRDraft } from '@repo/github'
-import { Tooltip } from '@repo/ui'
+import { PR, PRDraft } from '@repo/github'
+import { Button, Tooltip } from '@repo/ui'
 import { cn, queryClient } from '@repo/utils'
 import { useMemo } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation } from 'react-query'
 
-import type { Issue, IssueSearchPayload, WorkflowState } from '@linear/sdk'
+import type { Issue } from '@linear/sdk'
 
 import { getLinearClient } from '../client'
-
-import {
-  CheckIcon,
-  StateBacklog,
-  StateCanceled,
-  StateCompleted,
-  StateStarted,
-  StateTriage,
-  StateUnstarted,
-} from './icons'
 
 interface PRPopoverProps {
   issue: Issue
@@ -46,23 +36,6 @@ const usePRsFromDescription = (issue: Issue) => {
   }, [texts?.toString()])
 }
 
-function StateIcon({ state, states = [] }: { state: WorkflowState; states?: WorkflowState[] }) {
-  const siblings = states.filter((s) => s.type === state.type)
-  const index = siblings.findIndex((s) => s.id === state.id)
-  const filledPercent = index === -1 ? 0.5 : (index + 1) / (siblings.length + 1)
-
-  return (
-    <>
-      {state.type === 'backlog' && <StateBacklog fill={state.color} />}
-      {state.type === 'unstarted' && <StateUnstarted fill={state.color} />}
-      {state.type === 'started' && <StateStarted fill={state.color} percentage={filledPercent} />}
-      {state.type === 'completed' && <StateCompleted fill={state.color} />}
-      {state.type === 'canceled' && <StateCanceled fill={state.color} />}
-      {state.type === 'triage' && <StateTriage fill={state.color} />}
-    </>
-  )
-}
-
 const getPRLinkByURL = () => {
   const [URL, , number] = document.location?.href?.match(/(.*\/pull\/)(\d+)/) || []
 
@@ -83,24 +56,19 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
 
   const addCurrentPRToDescription = useMutation({
     mutationFn: async () => {
-      await getLinearClient(issue.id).updateIssue(issue.id, {
+      await getLinearClient(issue.identifier).updateIssue(issue.id, {
         description: [issue.description?.trim() || '', currentPR.link].filter(Boolean).join('\n\n'),
       })
     },
-    onError: (_error, _, context: { previousIssueFetch: IssueSearchPayload }) => {
+    onError: (_error, _, context: { previousIssueFetch: Issue }) => {
       queryClient.setQueryData(queryKey, context.previousIssueFetch)
     },
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey })
-      const previousIssueFetch = queryClient.getQueryData<IssueSearchPayload>(queryKey)
+      const previousIssueFetch = queryClient.getQueryData<Issue>(queryKey)
       queryClient.setQueryData(queryKey, {
         ...previousIssueFetch,
-        nodes: [
-          {
-            ...previousIssueFetch.nodes[0],
-            description: [issue.description?.trim() || '', currentPR.link].filter(Boolean).join('\n\n'),
-          },
-        ],
+        description: [issue.description?.trim() || '', currentPR.link].filter(Boolean).join('\n\n'),
       })
       return { previousIssueFetch }
     },
@@ -129,25 +97,20 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
       const newDescription = removePRReferenceFromDescription(url, issue.description)
 
       if (newDescription !== issue.description) {
-        await getLinearClient(issue.id).updateIssue(issue.id, {
+        await getLinearClient(issue.identifier).updateIssue(issue.id, {
           description: newDescription,
         })
       }
     },
-    onError: (_error, _, context: { previousIssueFetch: IssueSearchPayload }) => {
+    onError: (_error, _, context: { previousIssueFetch: Issue }) => {
       queryClient.setQueryData(queryKey, context.previousIssueFetch)
     },
     onMutate: async (url) => {
       await queryClient.cancelQueries({ queryKey })
-      const previousIssueFetch = queryClient.getQueryData<IssueSearchPayload>(queryKey)
+      const previousIssueFetch = queryClient.getQueryData<Issue>(queryKey)
       queryClient.setQueryData(queryKey, {
         ...previousIssueFetch,
-        nodes: [
-          {
-            ...previousIssueFetch.nodes[0],
-            description: removePRReferenceFromDescription(url, previousIssueFetch.nodes[0].description),
-          },
-        ],
+        description: removePRReferenceFromDescription(url, previousIssueFetch.description),
       })
       return { previousIssueFetch }
     },
@@ -178,7 +141,7 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
           content={
             <div className="text-center">
               <div>There are no PRs in the issue</div>
-              <div className="p-1 font-bold">
+              <div className="p-1 font-bold pt-2">
                 Click the icon to add
                 <br />
                 this PR to Linear
@@ -220,22 +183,14 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
                         </a>
                       </div>
                       <Tooltip content="Remove this reference">
-                        <button
-                          className="flex items-center border rounded p-0.5 bg-white hover:bg-gray-50"
-                          onClick={removePRReference(url)}
-                          type="button"
-                        >
+                        <Button asIcon onClick={removePRReference(url)}>
                           <TrashIcon className="size-4 text-red-700" />
-                        </button>
+                        </Button>
                       </Tooltip>
                     </div>
                   ))}
               </div>
-              <div className="text-center font-bold pt-1">
-                Click the icon to keep
-                <br />
-                this popup open
-              </div>
+              <div className="text-center font-bold pt-2 p-1">Click the icon to keep open</div>
             </div>
           }
         >
