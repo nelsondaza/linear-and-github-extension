@@ -1,7 +1,7 @@
 {
   "name": "linear-and-github-extension",
   "displayName": "Linear and github extension",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "A basic extension to connect Linear and GitHub",
   "author": "Nelson Daza",
   "packageManager": "pnpm@9.12.0",

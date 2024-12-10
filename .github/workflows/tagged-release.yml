@@ -65,25 +65,25 @@ jobs:
 
       - name: Build dev extension
         run: |
-          pnpm build --target=lage- --zip --tag=dev
+          pnpm build --zip --tag=dev
 
       - name: Build prod extension
         run: |
-          pnpm build --target=lage-
-          pnpm package --target=lage-
+          pnpm build
+          pnpm package
 
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            build/lage-dev.zip
-            build/lage-prod.zip
+            build/chrome-mv3-dev.zip
+            build/chrome-mv3-prod.zip
 
       - name: Upload built artifact
         uses: actions/upload-artifact@v4
         with:
-          path: build/lage-*.zip
+          path: build/chrome-mv3-*.zip
           retention-days: ${{ inputs.retention_days }}
 
       - name: Publish to Chrome Web Store
@@ -94,4 +94,4 @@ jobs:
           client_secret: ${{ secrets.CWS_CLIENT_SECRET }}
           extension_id: ${{ secrets.CWS_EXTENSION_ID }}
           refresh_token: ${{ secrets.CWS_REFRESH_TOKEN }}
-          zip_file: build/lage-prod.zip
+          zip_file: build/chrome-mv3-prod.zip
