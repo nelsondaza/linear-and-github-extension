@@ -83,6 +83,7 @@ export const useCompareCodes = () => {
           return a.length - b.length
         })
         .filter((code, index, array) => array.lastIndexOf(code) === index),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [refCodes.toString(), titleCodes.toString(), descriptionCodes.toString(), metaCodes.toString()],
   )
 }

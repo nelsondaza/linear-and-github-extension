@@ -15,7 +15,13 @@ module.exports = {
         commonjs: true,
         es6: true,
       },
-      extends: ['airbnb', 'prettier', 'plugin:unicorn/recommended', 'plugin:perfectionist/recommended-natural-legacy'],
+      extends: [
+        'airbnb',
+        'airbnb/hooks',
+        'prettier',
+        'plugin:unicorn/recommended',
+        'plugin:perfectionist/recommended-natural-legacy',
+      ],
       files: ['**/*.{j,t}s{x,}'],
       plugins: ['import', 'tailwindcss', 'perfectionist', 'sort-class-members'],
       rules: {
