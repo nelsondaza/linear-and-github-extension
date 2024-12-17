@@ -9,7 +9,7 @@ export const setCompareTitle = (title: string) => {
   }
 }
 
-export const getLinearCodes = (str?: null | string) => {
+export const getLinearCodes = (str?: null | string): string[] => {
   const codes = (str || '').match(/([A-Z0-9]{1,7}-\d+)/gim) || []
   return codes
     .map((code) => code.toUpperCase())
