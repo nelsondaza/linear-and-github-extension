@@ -19,7 +19,7 @@
     "@floating-ui/react": "^0.27.2",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
-    "@linear/sdk": "^35.0.0",
+    "@linear/sdk": "^37.0.0",
     "@plasmohq/storage": "^1.13.0",
     "plasmo": "0.89.4",
     "react": "18.3.1",
