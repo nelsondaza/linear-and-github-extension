@@ -12,20 +12,48 @@ const useCommentCodes = () => {
   const [codes, setCodes] = useState<string[]>([])
 
   useEffect(() => {
-    const contentNode = document.querySelector('.TimelineItem')
+    const cleanups = []
 
-    // Create an observer instance linked to the callback function
-    const observer = new MutationObserver(() => {
-      const content = contentNode?.textContent || ''
+    function onCommentChange(comment: Element) {
+      const content = comment.textContent || ''
       setCodes(getLinearCodes(content))
-    })
+    }
 
-    // Start observing the target node for configured mutations
-    observer.observe(contentNode, { childList: true, subtree: true })
+    function observeComment() {
+      const commentNode = document.querySelector('.TimelineItem')
+      if (!commentNode) {
+        return false
+      }
+
+      // Check comment content in case it already contains the text
+      onCommentChange(commentNode)
+
+      // Create an observer instance linked to the callback function
+      const observer = new MutationObserver(() => {
+        onCommentChange(commentNode)
+      })
+
+      // Start observing the target node for configured mutations
+      observer.observe(commentNode, { childList: true, subtree: true })
+      cleanups.push(() => observer.disconnect())
+      return true
+    }
+
+    // If the comment element is not found, observe the body to wait for it
+    if (!observeComment()) {
+      const observer = new MutationObserver(() => {
+        if (observeComment()) {
+          observer.disconnect()
+        }
+      })
+      // Create an observer instance linked to the callback function
+      observer.observe(document.body, { childList: true, subtree: true })
+      cleanups.push(() => observer.disconnect())
+    }
 
     // Later, you can stop observing
     return () => {
-      observer.disconnect()
+      cleanups.forEach((clean) => clean())
     }
   }, [])
 
