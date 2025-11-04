@@ -1,17 +1,35 @@
+import { CheckIcon, EyeIcon, EyeSlashIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { useStorage } from '@plasmohq/storage/hook'
 // eslint-disable-next-line import/no-unresolved
 import iconImage from 'data-base64:~assets/icon.svg'
 import { useEffect, useRef, useState } from 'react'
 
 import { LINEAR_API_KEY_STORAGE_KEYS } from '@repo/linear'
+import type { ButtonProps } from '@repo/ui'
 import { Input, setTooltipRoot } from '@repo/ui'
+import { cn } from '@repo/utils'
 
 import './style.css'
+
+const Button = (props: ButtonProps) => (
+  <button
+    {...props}
+    className={cn(
+      'inline-flex w-full justify-center rounded-md bg-white px-3 py-2 font-bold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto',
+      props.className,
+    )}
+    type="button"
+  >
+    {props.children}
+  </button>
+)
 
 function TeamAPIKEYInput(props: {
   apiKey: string
   index: number
   onChange: (index: number, teamId: string, apiKey: string) => void
+  onDelete: (index: number) => void
+  showKey: boolean
   teamId: string
 }) {
   const timeoutRef = useRef<NodeJS.Timeout>()
@@ -39,7 +57,7 @@ function TeamAPIKEYInput(props: {
   }, [])
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 items-end">
       <Input
         className="shrink"
         defaultValue={props.teamId || ''}
@@ -47,7 +65,7 @@ function TeamAPIKEYInput(props: {
         label="TEAM Identifier"
         maxLength={10}
         onChange={(e) => setTeamId(e.target.value)}
-        placeholder="LAGE"
+        placeholder="LAGE,TEAM,..."
       />
       <Input
         className="grow"
@@ -56,24 +74,24 @@ function TeamAPIKEYInput(props: {
         labelInfo="This item is stored secretly"
         onChange={(e) => setApiKey(e.target.value)}
         placeholder="lin_api_c9X..."
+        type={props.showKey ? 'text' : 'password'}
       />
+      <Button onClick={() => props.onDelete(props.index)}>
+        <TrashIcon className="size-6 text-red-700" />
+      </Button>
     </div>
   )
 }
 
 function Options() {
+  const [keysVisible, setKeysVisible] = useState(false)
   const [apiKeys, setApiKeys] = useStorage<Record<string, string>>(LINEAR_API_KEY_STORAGE_KEYS)
-  const objectEntries = Object.entries(apiKeys || {})
-  const sourceEntries = [
-    objectEntries.at(0) || ['', ''],
-    objectEntries.at(1) || ['', ''],
-    objectEntries.at(2) || ['', ''],
-  ]
+  const objectEntries = Object.entries(apiKeys || { '': '' })
 
-  const [entries, setEntries] = useState(sourceEntries)
+  const [entries, setEntries] = useState(objectEntries)
 
   useEffect(() => {
-    setEntries(sourceEntries)
+    setEntries(objectEntries)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiKeys])
 
@@ -86,11 +104,23 @@ function Options() {
   }
 
   const saveKeys = async () => {
-    await setApiKeys({
-      [entries[0][0]]: entries[0][1],
-      [entries[1][0]]: entries[1][1],
-      [entries[2][0]]: entries[2][1],
+    await setApiKeys(Object.fromEntries(entries))
+  }
+
+  const addKey = () => {
+    setEntries((prev) => [...prev, ['', ''] as const])
+  }
+
+  const removeKey = (index: number) => {
+    setEntries((prev) => {
+      const next = [...prev]
+      next.splice(index, 1)
+      return next
     })
+  }
+
+  const toggleKeysVisible = () => {
+    setKeysVisible(!keysVisible)
   }
 
   return (
@@ -124,24 +154,40 @@ function Options() {
           </div>
         </div>
         <div />
-        {sourceEntries.map(([teamId, apiKey], index) => (
+        {entries.map(([teamId, apiKey], index) => (
           <TeamAPIKEYInput
             key={`${index}-${teamId}-${apiKey}`}
-            apiKey={apiKey.replace(/./g, '*')}
+            apiKey={apiKey}
             index={index}
             onChange={setApiKey}
+            onDelete={removeKey}
+            showKey={keysVisible}
             teamId={teamId}
           />
         ))}
         <div className="border-b" />
-        <div>
-          <button
-            className="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 font-bold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-            onClick={saveKeys}
-            type="button"
-          >
+        <div className="flex gap-2">
+          <Button onClick={addKey}>
+            <PlusIcon className="size-6 inline-block mr-1" />
+            Add key
+          </Button>
+          <Button onClick={toggleKeysVisible}>
+            {keysVisible ? (
+              <>
+                <EyeSlashIcon className="size-6 inline-block mr-2" />
+                Hide keys
+              </>
+            ) : (
+              <>
+                <EyeIcon className="size-6 inline-block mr-1" />
+                Show keys
+              </>
+            )}
+          </Button>
+          <Button className="bg-green-100" onClick={saveKeys}>
+            <CheckIcon className="size-6 inline-block mr-1" />
             Save keys
-          </button>
+          </Button>
         </div>
       </div>
     </div>
