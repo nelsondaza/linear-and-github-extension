@@ -105,7 +105,7 @@ export const StatusPopover = ({ issue, status }: StatusPopoverProps) => {
     <Tooltip
       className="p-1 min-w-48"
       content={
-        <div className="whitespace-nowrap *:flex *:gap-2 *:items-center *:w-full *:px-2.5 *:py-1.5 *:rounded-md *:cursor-pointer hover:*:bg-gray-100">
+        <div className="whitespace-nowrap *:flex *:gap-2 *:items-center *:w-full *:px-2.5 *:py-1.5 *:rounded-md *:cursor-pointer hover:*:bg-[--bgColor-accent-emphasis]">
           {statuses.map((_status, index) => (
             <button key={_status.id} onClick={changeStatus(_status.id)} type="button">
               <StateIcon state={_status} states={statuses} />

@@ -44,7 +44,7 @@ export const PriorityPopover = ({ issue }: PriorityPopoverProps) => {
     <Tooltip
       className="p-1 min-w-48"
       content={
-        <div className="whitespace-nowrap *:flex *:gap-2 *:items-center *:w-full *:px-2.5 *:py-1.5 *:rounded-md *:cursor-pointer hover:*:bg-gray-100">
+        <div className="whitespace-nowrap *:flex *:gap-2 *:items-center *:w-full *:px-2.5 *:py-1.5 *:rounded-md *:cursor-pointer hover:*:bg-[--bgColor-accent-emphasis]">
           <button onClick={changePriority(0)} type="button">
             <PriorityNone />
             <div>No priority</div>
