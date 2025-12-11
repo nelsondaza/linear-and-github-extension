@@ -1,11 +1,10 @@
 import { TrashIcon } from '@heroicons/react/24/outline'
-import { PR, PRDraft } from '@repo/github'
+import { PRDraft, PRIcon, PROpen } from '@repo/github'
 import { Button, Tooltip } from '@repo/ui'
 import { cn, queryClient } from '@repo/utils'
-import { useMemo } from 'react'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 
-import type { Issue } from '@linear/sdk'
+import type { Attachment, AttachmentConnection, Issue } from '@linear/sdk'
 
 import { getLinearClient } from '../client'
 
@@ -15,128 +14,100 @@ interface PRPopoverProps {
   className?: string
 }
 
-const PR_REFERENCE_REPLACE_KEY = '<!-- __PR_REFERENCE__ -->'
+const isPullRequest = (attachement: Attachment) =>
+  attachement.source?.type === 'github' && !!attachement.source?.pullRequestId
 
-const usePRsFromDescription = (issue: Issue) => {
-  const texts = issue?.description?.match(/\[.+]\(https:\/\/github\.com\/.+\/pull\/\d+.*\)/gim)
+// Returns the map of PRs in from of (number => pr metadata)
+const usePRs = (issue: Issue): Record<string, Attachment> => {
+  const fetchIssueAttachements = useQuery({
+    enabled: !!issue,
+    queryFn: async () => issue.attachments(),
+    queryKey: ['linear', 'issues', issue.identifier, 'attachements'],
+  })
 
-  return useMemo(() => {
-    const map = new Map<string, { number: string; texts: Set<string> }>()
-    texts?.forEach((text) => {
-      const [_t, _p, url, number] = text.match(/(\()(https:\/\/github\.com\/.+\/pull\/(\d+))/i) || []
-      if (url) {
-        const item = map.get(url) || { number, texts: new Set<string>() }
-        item.texts.add(text)
-        map.set(url, item)
-      }
-    })
+  const attachements = fetchIssueAttachements.data?.nodes ?? []
 
-    return map
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [texts?.toString()])
+  return Object.fromEntries(
+    attachements.filter(isPullRequest).map((attachement) => [attachement.metadata.number.toString(), attachement]),
+  )
 }
 
-const getPRLinkByURL = () => {
-  const [URL, , number] = document.location?.href?.match(/(.*\/pull\/)(\d+)/) || []
+const getCurrentPR = () => {
+  const [url, , number] = document.location?.href?.match(/(.*\/pull\/)(\d+)/) || []
 
   if (number) {
-    return { link: `[GitHub Pull Request #${number}](${URL})`, number }
+    return {
+      number,
+      title: document.querySelector('#partial-discussion-header h1[class*="title"] bdi')?.textContent,
+      url,
+    }
   }
-  return { link: '', number: '' }
+  return { number: '', url: '' }
 }
 
 export const PRPopover = ({ className, issue }: PRPopoverProps) => {
-  const prs = usePRsFromDescription(issue)
+  const prs = usePRs(issue)
 
-  const currentPR = getPRLinkByURL()
+  const currentPR = getCurrentPR()
 
-  const isCurrentPRInIssue = prs.values().some((pr) => pr.number === currentPR.number)
+  const isCurrentPRInIssue = !!prs[currentPR.number]
 
-  const queryKey = ['linear', 'issues', issue?.identifier, 'issue']
+  const queryKey = ['linear', 'issues', issue.identifier, 'attachements']
 
-  const addCurrentPRToDescription = useMutation({
+  const addCurrentPRMutation = useMutation({
     mutationFn: async () => {
-      await getLinearClient(issue.identifier).updateIssue(issue.id, {
-        description: [issue.description?.trim() || '', currentPR.link].filter(Boolean).join('\n\n'),
-      })
-    },
-    onError: (_error, _, context: { previousIssueFetch: Issue }) => {
-      queryClient.setQueryData(queryKey, context.previousIssueFetch)
+      await getLinearClient(issue.identifier).attachmentLinkGitHubPR(issue.id, currentPR.url)
     },
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey })
-      const previousIssueFetch = queryClient.getQueryData<Issue>(queryKey)
+      const previousAttachments = queryClient.getQueryData<AttachmentConnection>(queryKey)
       queryClient.setQueryData(queryKey, {
-        ...previousIssueFetch,
-        description: [issue.description?.trim() || '', currentPR.link].filter(Boolean).join('\n\n'),
+        ...previousAttachments,
+        nodes: [
+          ...previousAttachments.nodes,
+          {
+            id: 'new',
+            metadata: { number: currentPR.number, status: 'open', title: currentPR.title, url: currentPR.url },
+            source: { pullRequestId: 'current', type: 'github' },
+          },
+        ],
       })
-      return { previousIssueFetch }
     },
-    onSettled: async () => queryClient.invalidateQueries({ queryKey }),
+    onSettled: () => queryClient.invalidateQueries(queryKey),
   })
 
-  const removePRReferenceFromDescription = (url: string, description = '') => {
-    const linesToRemove = prs.get(url)?.texts.values().toArray() || []
-    let newDescription = description
-    linesToRemove.forEach((line) => {
-      newDescription = newDescription.replace(line, PR_REFERENCE_REPLACE_KEY)
-    })
-
-    return (
-      newDescription
-        .split(PR_REFERENCE_REPLACE_KEY)
-        .map((line) => line.trim())
-        .filter(Boolean)
-        .join('\n')
-        .trim() || '\n'
-    )
-  }
-
-  const removePRFromDescription = useMutation({
-    mutationFn: async (url: string) => {
-      const newDescription = removePRReferenceFromDescription(url, issue.description)
-
-      if (newDescription !== issue.description) {
-        await getLinearClient(issue.identifier).updateIssue(issue.id, {
-          description: newDescription,
-        })
-      }
+  const removePRReferenceMutation = useMutation({
+    mutationFn: async ({ id }: { id: string }) => {
+      await getLinearClient(issue.identifier).deleteAttachment(id)
     },
-    onError: (_error, _, context: { previousIssueFetch: Issue }) => {
-      queryClient.setQueryData(queryKey, context.previousIssueFetch)
-    },
-    onMutate: async (url) => {
-      await queryClient.cancelQueries({ queryKey })
-      const previousIssueFetch = queryClient.getQueryData<Issue>(queryKey)
+    onMutate: async ({ id }) => {
+      await queryClient.cancelQueries(queryKey)
+      const previousAttachments = queryClient.getQueryData<AttachmentConnection>(queryKey)
       queryClient.setQueryData(queryKey, {
-        ...previousIssueFetch,
-        description: removePRReferenceFromDescription(url, previousIssueFetch.description),
+        ...previousAttachments,
+        nodes: previousAttachments.nodes.filter((node) => node.id !== id),
       })
-      return { previousIssueFetch }
     },
-    onSettled: async () => queryClient.invalidateQueries({ queryKey }),
+    onSettled: () => queryClient.invalidateQueries(queryKey),
   })
 
   const addCurrentPR = async () => {
-    await addCurrentPRToDescription.mutateAsync()
+    await addCurrentPRMutation.mutateAsync()
   }
 
-  const removePRReference = (url: string) => async () => {
-    await removePRFromDescription.mutateAsync(url)
+  const removePR = (pr: Attachment) => async () => {
+    await removePRReferenceMutation.mutateAsync({ id: pr.id })
   }
 
-  if (prs.size <= 0 && !currentPR.link) {
+  const prEntries = Object.entries(prs)
+
+  if (prEntries.length <= 0 && !currentPR.url) {
     return null
   }
 
   return (
     <div className={cn('PRPopover', className)}>
-      {/* <Branch className="text-orange-600" /> */}
-      {/* <Merge className="text-violet-700" /> */}
-      {/* <PR className="text-green-700" /> */}
-      {/* <PRClosed className="text-red-600" /> */}
-      {/* <PRDraft className="text-gray-400" /> */}
-      {prs.size <= 0 ? (
+      {prEntries.length <= 0 ? (
         <Tooltip
           content={
             <div className="text-center">
@@ -151,7 +122,7 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
           on={['hover', 'focus']}
         >
           <button onClick={addCurrentPR} type="button">
-            <PRDraft className="text-gray-400" />
+            <PROpen className="text-[--fgColor-muted]" />
           </button>
         </Tooltip>
       ) : (
@@ -171,32 +142,32 @@ export const PRPopover = ({ className, issue }: PRPopoverProps) => {
                     </button>
                   </Tooltip>
                 )}
-                {prs
-                  .entries()
-                  .toArray()
-                  .map(([url, pr], index, list) => (
-                    <div key={url} className="flex items-center gap-2 p-1 rounded border hover:bg-gray-50">
-                      <PR className="shrink text-green-700" />
-                      <div className="grow text-gray-500">
-                        <a href={url} target={`_lage-pr${pr.number}`}>
-                          {list.length > 1 && `${index + 1}. `} PR #{pr.number}
-                        </a>
-                      </div>
-                      <Tooltip content="Remove this reference">
-                        <Button asIcon onClick={removePRReference(url)}>
-                          <TrashIcon className="size-4 text-red-700" />
-                        </Button>
-                      </Tooltip>
+                {prEntries.map(([prNum, pr], index, list) => (
+                  <div
+                    key={pr.metadata.url}
+                    className="flex items-center gap-2 p-1 rounded hover:bg-[--bgColor-accent-emphasis]"
+                  >
+                    {<PRIcon className="skrink" status={pr.metadata.status} />}
+                    <div className="grow text-[--fgColor-default]">
+                      <a href={pr.metadata.url} target={`_lage-pr${prNum}`}>
+                        {pr.metadata.title} <span className="text-[--fgColor-muted]">#{prNum}</span>
+                      </a>
                     </div>
-                  ))}
+                    <Tooltip content="Remove this reference">
+                      <Button asIcon onClick={removePR(pr)}>
+                        <TrashIcon className="size-4 text-red-700" />
+                      </Button>
+                    </Tooltip>
+                  </div>
+                ))}
               </div>
               <div className="text-center font-bold pt-2 p-1">Click the icon to keep open</div>
             </div>
           }
         >
           <button className="flex items-center gap-1" type="button">
-            <PR className="text-green-700" />
-            {prs.size > 1 && <div className="text-gray-500">{prs.size}</div>}
+            <PROpen className="text-[--fgColor-muted]" />
+            {prEntries.length > 1 && <div className="text-gray-500">{prEntries.length}</div>}
           </button>
         </Tooltip>
       )}
