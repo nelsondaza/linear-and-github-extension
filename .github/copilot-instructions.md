@@ -10,9 +10,23 @@
 **Node Version:** 20.x+ (tested with v25.2.1)  
 **Framework:** Plasmo v0.89.4 (browser extension framework)
 
+## Documentation
+
+**Complete documentation** is available in the `docs/` directory:
+
+- **[docs/README.md](../docs/README.md)** - Main comprehensive guide (installation, setup, usage, architecture)
+- **[docs/CONTRIBUTING.md](../docs/CONTRIBUTING.md)** - Development workflow, coding standards, commit conventions
+- **[docs/FAQ.md](../docs/FAQ.md)** - Frequently asked questions
+- **[docs/TROUBLESHOOTING.md](../docs/TROUBLESHOOTING.md)** - Common issues and solutions
+- **[docs/linear_API_KEY.md](../docs/linear_API_KEY.md)** - Linear API key setup guide
+- **[docs/CHANGELOG.md](../docs/CHANGELOG.md)** - Version history and roadmap
+
+**Always refer to these docs** for detailed information before exploring the codebase.
+
 ## Architecture & Project Structure
 
 ### Root Structure
+
 ```
 /                          # Root directory
 ├── _popup.tsx            # Extension popup component
@@ -28,12 +42,15 @@
 │   ├── utils/            # Shared utilities
 │   └── git-commands/     # Git hooks configuration
 ├── assets/               # Static assets (icons, images)
+├── docs/                 # Complete documentation
 ├── build/                # Build output (gitignored)
 └── .plasmo/              # Plasmo framework cache (gitignored)
 ```
 
 ### Package Architecture
+
 This is a **monorepo** with internal packages referenced via TypeScript path aliases:
+
 - `@repo/linear` → `packages/linear/src`
 - `@repo/github` → `packages/github/src`
 - `@repo/ui` → `packages/ui/src`
@@ -41,129 +58,59 @@ This is a **monorepo** with internal packages referenced via TypeScript path ali
 
 All packages are **private** and have `sideEffects: false` in their package.json.
 
-### Key Components
-- **Content Scripts**: `contents/githubCompare.tsx` and `contents/githubPull.tsx` are Plasmo content scripts that inject UI into GitHub pages
-- **Linear Integration**: `packages/linear/src/client/` contains Linear API client using `@linear/sdk`
-- **UI Components**: `packages/ui/src/components/` contains reusable components (Button, Input, Modal, Drawer, Table, etc.)
-- **Styling**: Uses Tailwind CSS with custom configuration in `tailwind.config.ts`
+**For detailed architecture**, see [docs/README.md#architecture](../docs/README.md#architecture).
 
-## Build & Development Commands
+## Quick Reference: Essential Commands
 
 ### Initial Setup
-```bash
-# Always run after cloning or when dependencies change
-pnpm install --frozen-lockfile
 
-# Configure git hooks (run once after clone)
-pnpm prepare
+```bash
+pnpm install --frozen-lockfile  # Install dependencies
+pnpm prepare                     # Configure git hooks
 ```
 
 ### Development
-```bash
-# Start development server with hot reload
-pnpm dev
 
-# Load the extension from build/chrome-mv3-dev in Chrome
+```bash
+pnpm dev      # Start dev server (output: build/chrome-mv3-dev)
+pnpm lint     # Run ESLint
+pnpm lint:tsc # Run TypeScript type checking
+pnpm pretty   # Format code and fix lint issues
 ```
 
-### Production Build
+### Production
+
 ```bash
-# Clean build (recommended before production build)
-rm -rf build/ .plasmo/ tsconfig.tsbuildinfo
-
-# Build for production
-pnpm build
-# Output: build/chrome-mv3-prod/
-
-# Create distribution zip
-pnpm package
-# Output: build/chrome-mv3-prod.zip
+pnpm build    # Production build (output: build/chrome-mv3-prod)
+pnpm package  # Create ZIP for Chrome Web Store
 ```
 
-**Build Time:** ~3-5 seconds (clean build)  
-**Known Build Warnings:** 
-- Browserslist data outdated warning (safe to ignore)
-- Plasmo version update available (safe to ignore unless instructed)
+**Full command reference**: [docs/README.md#development](../docs/README.md#development)
 
-### Code Quality Commands
-```bash
-# Run ESLint (with caching)
-pnpm lint
+## Code Quality Requirements
 
-# Run ESLint with auto-fix on specific files
-pnpm lint:files --fix <file1> <file2>
+**Before committing:**
+- ✅ `pnpm lint` must pass with no errors
+- ✅ `pnpm lint:tsc` must pass with no type errors
+- ✅ Git hooks will auto-format and fix issues
 
-# Type check with TypeScript
-pnpm lint:tsc
-
-# Format code with Prettier and fix lint issues
-pnpm pretty
-```
-
-**IMPORTANT:** Always run both `pnpm lint` and `pnpm lint:tsc` after making changes. These commands should complete with no errors before committing.
-
-## Pre-commit & Pre-push Hooks
-
-Git hooks are located in `packages/git-commands/hooks/` and are automatically configured via the `prepare` script.
-
-### Pre-commit Hook Behavior
-1. Runs Prettier on staged files (`.yml`, `.scss`, `.css`, `.json`, `.js`, `.mjs`, `.cjs`, `.jsx`, `.ts`, `.tsx`)
-2. Runs ESLint with auto-fix on staged JavaScript/TypeScript files
-3. Re-adds fixed files to staging area
-4. **Skips** on detached HEAD state
-
-### Pre-push Hook Behavior
-1. Compares files against `origin/HEAD`
-2. Runs Prettier and ESLint on changed files
-3. Auto-fixes issues before push
-
-**Note:** Hooks are interactive (`exec < /dev/tty`) and will prompt if terminal is available.
-
-## CI/CD Pipeline
-
-### GitHub Actions Workflow
-**File:** `.github/workflows/tagged-release.yml`
-
-**Trigger:** Push tags matching `v*.*.*` pattern or manual workflow dispatch
-
-**Steps:**
-1. Checkout code
-2. Install pnpm via `pnpm/action-setup@v4`
-3. Cache pnpm store using `actions/cache@v4`
-4. Setup Node.js 20.x with pnpm cache
-5. Run `pnpm install --frozen-lockfile`
-6. Update version in package.json from tag
-7. Run `pnpm build`
-8. Run `pnpm package`
-9. Create GitHub release with `build/chrome-mv3-prod.zip`
-10. Upload artifact with configurable retention
-11. Publish to Chrome Web Store (requires secrets)
-
-**Required Secrets:**
-- `CWS_CLIENT_ID`
-- `CWS_CLIENT_SECRET`
-- `CWS_EXTENSION_ID`
-- `CWS_REFRESH_TOKEN`
+**For complete coding standards**, see [docs/CONTRIBUTING.md#coding-standards](../docs/CONTRIBUTING.md#coding-standards).
 
 ## Linting & Code Style
 
 ### ESLint Configuration
-**File:** `.eslintrc.js`
 
 **Key Rules:**
-- **Extends:** Airbnb, Airbnb hooks, Prettier, Unicorn, Perfectionist
-- **Import order:** Enforced with alphabetical sorting and newlines between groups
-- **Max line length:** 120 characters
-- **Indentation:** 2 spaces, SwitchCase indented
-- **Arrow functions:** Always use parentheses around parameters
-- **Import extensions:** Never use extensions for `.js`, `.jsx`, `.ts`, `.tsx`
-- **Sorting:** Natural sorting for imports, object types, JSX props via Perfectionist plugin
-- **Tailwind:** Enforced via `eslint-plugin-tailwindcss`
+- Extends: Airbnb, Airbnb TypeScript, Prettier, Unicorn, Perfectionist
+- Max line length: 120 characters
+- Indentation: 2 spaces
+- Import order: Alphabetical with newlines between groups
+- Tailwind CSS: Class order enforced
 
 **Plugins:** import, tailwindcss, perfectionist, sort-class-members, unicorn, react, react-hooks, jsx-a11y
 
 ### Prettier Configuration
-**File:** `.prettierrc`
+
 ```json
 {
   "printWidth": 120,
@@ -175,109 +122,161 @@ Git hooks are located in `packages/git-commands/hooks/` and are automatically co
 }
 ```
 
-**Key Style:**
-- No semicolons
-- Single quotes
-- 120 character line width
-- Always trailing commas
-- Arrow function params always wrapped in parens
+**Key Style:** No semicolons, single quotes, 120 chars, trailing commas
 
-### TypeScript Configuration
-**File:** `tsconfig.json`
+### TypeScript
 
 - Extends Plasmo's base config
 - JSX mode: `react-jsx`
-- Path aliases configured for `@repo/*` packages
-- Includes `reset.d.ts` for TypeScript reset types
+- Path aliases for `@repo/*` packages
+- Strict type checking enabled
 
-## Common Issues & Workarounds
+## Git Hooks
 
-### Issue: Build fails after dependency changes
-**Solution:** Clean and reinstall
-```bash
-rm -rf node_modules/ pnpm-lock.yaml
-pnpm install
-```
+**Location:** `packages/git-commands/hooks/`
 
-### Issue: Type errors in IDE but builds fine
-**Solution:** Clean TypeScript cache
-```bash
-rm -rf tsconfig.tsbuildinfo .plasmo/
-pnpm lint:tsc
-```
+**Pre-commit:**
+- Runs Prettier on staged files
+- Runs ESLint with auto-fix
+- Re-adds fixed files to staging
 
-### Issue: ESLint cache causing stale errors
-**Solution:** Remove ESLint cache
-```bash
-rm -rf build/.eslintcache
-pnpm lint
-```
+**Pre-push:**
+- Validates code quality before push
+- Auto-fixes issues
 
-### Issue: Changes not appearing in development
-**Solution:** Restart dev server and reload extension
-```bash
-# Stop dev server (Ctrl+C)
-rm -rf .plasmo/
-pnpm dev
-```
+**For hook details**, see [docs/CONTRIBUTING.md#development-workflow](../docs/CONTRIBUTING.md#development-workflow).
 
 ## Extension-Specific Details
 
 ### Manifest Permissions
-The extension requires host permissions for:
+
 - `*://*.github.com/*` - Inject UI into GitHub pages
 - `*://*.linear.app/*` - Access Linear API
 
-### Storage
-- Uses `@plasmohq/storage` for settings persistence
-- Stores Linear API keys via Chrome Storage Sync API
-- Settings accessible via options page (`options.tsx`)
-
 ### Content Script Injection
-- **GitHub Pull Requests:** Matches `https://github.com/*/pull/*`
-- **GitHub Compare:** Matches `https://github.com/*/compare/*?expand=*`
-- Injects components using Plasmo's `getInlineAnchor` API
+
+- **GitHub Pull Requests:** `https://github.com/*/pull/*`
+- **GitHub Compare:** `https://github.com/*/compare/*?expand=*`
+- Uses Plasmo's `getInlineAnchor` API
 
 ### Linear API Integration
+
 - Requires user-provided Linear API key
-- Documentation in `docs/linear_API_KEY.md`
-- Pattern for Linear issue codes: `[A-Z0-9]{1,7}-\d+` (e.g., `PROJ-123`)
+- Issue code format: `[A-Z0-9]{1,7}-\d+` (e.g., `PROJ-123`)
+- Scans: PR titles, descriptions, commit messages
 
-## Dependencies Management
+**For API key setup**, see [docs/linear_API_KEY.md](../docs/linear_API_KEY.md).
 
-**Dependabot:** Configured for weekly npm dependency updates (`.github/dependabot.yml`)
+## Common Issues & Quick Fixes
 
-**Key Dependencies:**
-- `plasmo` - Extension framework
-- `react` / `react-dom` - UI library
-- `@linear/sdk` - Linear API client
-- `react-query` - Data fetching
-- `@headlessui/react` - UI primitives
-- `@heroicons/react` - Icon library
+### Build fails after dependency changes
+```bash
+rm -rf node_modules/ pnpm-lock.yaml && pnpm install
+```
+
+### Type errors in IDE but builds fine
+```bash
+rm -rf tsconfig.tsbuildinfo .plasmo/ && pnpm lint:tsc
+```
+
+### ESLint cache causing stale errors
+```bash
+rm -rf build/.eslintcache && pnpm lint
+```
+
+### Changes not appearing in development
+```bash
+rm -rf .plasmo/ && pnpm dev
+```
+
+**For comprehensive troubleshooting**, see [docs/TROUBLESHOOTING.md](../docs/TROUBLESHOOTING.md).
+
+## CI/CD Pipeline
+
+**File:** `.github/workflows/tagged-release.yml`
+
+**Trigger:** Push tags matching `v*.*.*` or manual dispatch
+
+**Key Steps:**
+1. Install dependencies with pnpm
+2. Build production version
+3. Create distribution ZIP
+4. Create GitHub release
+5. Publish to Chrome Web Store (with secrets)
+
+**Required Secrets:** CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_EXTENSION_ID, CWS_REFRESH_TOKEN
 
 ## Testing
 
 **Note:** This project currently has **no automated tests**. Manual testing required:
-1. Build extension with `pnpm build`
-2. Load `build/chrome-mv3-prod` in Chrome
+
+1. Build: `pnpm build`
+2. Load `build/chrome-mv3-prod` in Chrome (`chrome://extensions/`)
 3. Navigate to GitHub PR or compare page
 4. Verify Linear issues display correctly
 
-## Final Checklist for Changes
+**For testing guidelines**, see [docs/CONTRIBUTING.md#testing-the-pr](../docs/CONTRIBUTING.md#testing-the-pr).
 
-Before committing any code changes:
-- [ ] Run `pnpm lint` - should pass with no errors
-- [ ] Run `pnpm lint:tsc` - should pass with no type errors
-- [ ] Run `pnpm build` - should complete successfully in ~3-5 seconds
-- [ ] Run `pnpm package` - should create zip file
-- [ ] Test extension manually by loading build output in Chrome
-- [ ] Verify no generated files are staged (check `.gitignore`)
+## Pre-Commit Checklist
 
-## Trust These Instructions
+- [ ] `pnpm lint` passes with no errors
+- [ ] `pnpm lint:tsc` passes with no type errors
+- [ ] `pnpm build` completes successfully (~3-5 seconds)
+- [ ] Extension tested manually in Chrome
+- [ ] No generated files staged (check `.gitignore`)
+- [ ] Commit message follows [Conventional Commits](../docs/CONTRIBUTING.md#commit-guidelines)
 
-These instructions have been validated against the actual codebase and build commands. Only perform additional exploration if:
-1. Commands documented here fail unexpectedly
-2. You need information about implementation details not covered here
-3. The instructions appear outdated based on error messages
+**Full checklist**: [docs/CONTRIBUTING.md#pull-request-process](../docs/CONTRIBUTING.md#pull-request-process)
 
-When in doubt, refer to these instructions first before exploring the codebase.
+## Key Dependencies
+
+- `plasmo` (0.89.4) - Extension framework
+- `react` (18.3.1) / `react-dom` - UI library
+- `@linear/sdk` (^35.0.0) - Linear API client
+- `react-query` (^3.39.3) - Data fetching
+- `@headlessui/react` (^2.2.9) - UI primitives
+- `@heroicons/react` (^2.2.0) - Icon library
+- `tailwindcss` (^3.4.19) - Styling
+
+**Dependabot:** Configured for weekly npm dependency updates
+
+## Important Conventions
+
+### Import Order
+1. External dependencies (React, etc.)
+2. Internal packages (`@repo/*`)
+3. Relative imports (`./*`, `../*`)
+4. Style imports
+
+### Component Structure
+- Use functional components with hooks
+- Keep components small and focused
+- Extract reusable logic into custom hooks
+
+### File Naming
+- Components: PascalCase (e.g., `LinearIssue.tsx`)
+- Utilities: camelCase (e.g., `formatDate.ts`)
+- Hooks: camelCase with `use` prefix (e.g., `useCompareCodes.ts`)
+
+**Complete conventions**: [docs/CONTRIBUTING.md#coding-standards](../docs/CONTRIBUTING.md#coding-standards)
+
+## Trust the Documentation
+
+These instructions provide a quick reference. **Always consult the full documentation** in `docs/` for:
+- Detailed setup and configuration
+- Comprehensive troubleshooting
+- Contributing guidelines
+- Security and privacy policies
+
+**When in doubt:**
+1. Check [docs/README.md](../docs/README.md) first
+2. Search [docs/FAQ.md](../docs/FAQ.md) for your question
+3. Review [docs/TROUBLESHOOTING.md](../docs/TROUBLESHOOTING.md) for issues
+4. Refer to [docs/CONTRIBUTING.md](../docs/CONTRIBUTING.md) for development
+
+Only explore the codebase directly if the documentation doesn't cover your specific case.
+
+---
+
+**Documentation Version:** 1.0 (Updated December 2025)  
+**Project Version:** 0.0.4
