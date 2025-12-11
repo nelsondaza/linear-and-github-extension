@@ -8,11 +8,13 @@ const storage = new Storage()
 const linearClientsMap = new Map<string, LinearClient>()
 
 const loadLinearClients = (apiKeys: Record<string, string>) => {
-  Object.entries(apiKeys).forEach(([teamId, apiKey]) => {
-    if (teamId && apiKey) {
-      linearClientsMap.set(teamId.toLowerCase(), new LinearClient({ apiKey }))
-    }
-  })
+  Object.entries(apiKeys).forEach(([teamIds, apiKey]) =>
+    teamIds.split(',').forEach((teamId) => {
+      if (teamId && apiKey) {
+        linearClientsMap.set(teamId.toLowerCase(), new LinearClient({ apiKey }))
+      }
+    }),
+  )
 }
 
 // eslint-disable-next-line unicorn/prefer-top-level-await
@@ -33,6 +35,12 @@ storage.watch({
   },
 })
 
-export const useLinearClient = (teamId: string) => linearClientsMap.get(teamId.split('-').at(0).toLowerCase())
+export const getLinearClient = (teamId: string) => {
+  const client = linearClientsMap.get(teamId.split('-').at(0).toLowerCase())
+  if (!client) {
+    return linearClientsMap.get('*')
+  }
+  return client
+}
 
-export const getLinearClient = (teamId: string) => linearClientsMap.get(teamId.split('-').at(0).toLowerCase())
+export const useLinearClient = (teamId: string) => getLinearClient(teamId)
