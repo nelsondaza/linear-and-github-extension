@@ -18,8 +18,8 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0(react@18.3.1)
       '@linear/sdk':
-        specifier: ^35.0.0
-        version: 35.0.0
+        specifier: ^65.2.0
+        version: 65.2.0
       '@plasmohq/storage':
         specifier: ^1.15.0
         version: 1.15.0(react@18.3.1)
@@ -465,9 +465,9 @@ packages:
   '@lezer/lr@1.4.5':
     resolution: {integrity: sha512-/YTRKP5yPPSo1xImYQk7AZZMAgap0kegzqCSYHjAL9x1AZ0ZQW+IpcEzMKagCsbTsLnVeWkxYrCNeXG8xEPrjg==}
 
-  '@linear/sdk@35.0.0':
-    resolution: {integrity: sha512-fQiMH48imUkkloaXsAKQ+p3EnYUStC8lvg8WNB8UibLb5N5JPJp9DWKew+h2k10maErFBaMULnXA3SAsj1jaAQ==}
-    engines: {node: '>=12.x', yarn: 1.x}
+  '@linear/sdk@65.2.0':
+    resolution: {integrity: sha512-HnvQm31aiTLwJh0k4fB1FweXPfNFtwG8QcjUclAL/O92s+62t5izyFk7S2aTulAVj8fu4XqCmVt2k2DFf2+vSw==}
+    engines: {node: '>=18.x'}
 
   '@ljharb/through@2.3.14':
     resolution: {integrity: sha512-ajBvlKpWucBB17FuQYUShqpqy8GRgYEpJW0vWJbUu1CV9lWyrDCapy0lScU8T8Z6qn49sSwJB3+M+evYIdGg+A==}
@@ -5130,7 +5130,7 @@ snapshots:
     dependencies:
       '@lezer/common': 1.4.0
 
-  '@linear/sdk@35.0.0':
+  '@linear/sdk@65.2.0':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@15.10.1)
       graphql: 15.10.1
