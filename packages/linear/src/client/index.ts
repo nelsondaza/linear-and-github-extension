@@ -25,7 +25,10 @@ storage.get<Record<string, string> | undefined>(LINEAR_API_KEY_STORAGE_KEYS).the
 storage.watch({
   [LINEAR_API_KEY_STORAGE_KEYS]: (apiKeys) => {
     if (apiKeys.newValue) {
-      loadLinearClients(apiKeys.newValue)
+      loadLinearClients(
+        // @ts-ignore newValues is not a Record<string, string>
+        apiKeys.newValue,
+      )
     }
   },
 })
