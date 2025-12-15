@@ -38,7 +38,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
   const assignee = fetchAssignee.data
 
   return (
-    <div className="flex items-center justify-between gap-1.5 border-b border-gray-300 last:border-0 px-4 py-2">
+    <div className="flex items-center justify-between gap-1.5 border-b border-[--borderColor-default] last:border-0 px-4 py-2">
       <div className="flex gap-1.5 items-center">
         <Tooltip content="Manage priority" on={['hover', 'focus']}>
           <PriorityPopover issue={issue} />
@@ -61,7 +61,7 @@ export const LinearIssue = ({ code }: { code: string }) => {
         {issue ? (
           <div>
             <a
-              className="hover:text-black hover:underline underline-offset-3 line-clamp-2"
+              className="hover:text-[--fgColor-default] hover:underline underline-offset-3 line-clamp-2 text-[--fgColor-muted] transition-colors"
               href={issue.url}
               target={code}
               title={issue.title || ''}

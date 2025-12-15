@@ -138,7 +138,7 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(
             <div
               {...interactions.getFloatingProps({
                 className: cn(
-                  'Tooltip z-modals bg-white border border-greyDark stroke-greyDark rounded-md shadow-md text-sm px-2 py-1',
+                  'Tooltip z-modals bg-[--overlay-bgColor] border border-[--borderColor-default] stroke-[--borderColor-default] rounded-md shadow-md text-sm px-2 py-1',
                   className,
                 ),
                 ref: floating.context.refs.setFloating,
@@ -147,7 +147,7 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(
             >
               {content}
               <FloatingArrow
-                className="size-4 fill-white *:border-none *:stroke-inherit [&>path:first-of-type]:stroke-2 [&>path:last-of-type]:stroke-none [&>path:last-of-type]:stroke-0"
+                className="size-4 fill-[--overlay-bgColor] *:border-none *:stroke-inherit [&>path:first-of-type]:stroke-2 [&>path:last-of-type]:stroke-none [&>path:last-of-type]:stroke-0"
                 context={floating.context}
                 ref={arrowRef}
                 strokeWidth={1}
